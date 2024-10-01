@@ -8,7 +8,7 @@ class AppStyels {
   static const Color backgroundColor = Color(0xFFF5F5F5);
   static const Color textColor = Color(0xFF333333);
   static const Color textColorSecondary = Color(0xFF666666);
-  static const Color textColorTertiary = Color(0xFF999999);
+  static const Color textfeildColor = Color(0xFF999999);
   static const Color textColorQuaternary = Color(0xFFCCCCCC);
 
   static ThemeData appTheme = ThemeData(

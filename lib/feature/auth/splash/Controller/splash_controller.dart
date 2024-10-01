@@ -4,7 +4,7 @@ import 'package:tasky_app/core/route/controller/route_controller.dart';
 class SplashController extends GetxController {
   final RxDouble opacity = 0.0.obs;
   final RxDouble scale = 0.5.obs;
-  final RouteController routeController = Get.put(RouteController());
+  final RouteController routeController = Get.find<RouteController>();
 
   @override
   void onInit() {

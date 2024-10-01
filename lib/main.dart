@@ -20,10 +20,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       title: AppConstants.appName,
       theme: AppStyels.appTheme,
-      initialRoute: AppRoutes.splash,
-      getPages: AppRoutes.routes,
+      initialRoute: AppRoutes.configRoute,
+      getPages: AppRoutes.getRoutes(),
     );
   }
 }

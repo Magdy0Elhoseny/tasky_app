@@ -1,3 +1,3 @@
 class AppUrls {
-  static const String baseUrl = "https://tasky.test-s.com/api";
+  static const String baseUrl = "https://todo.iraqsapp.com";
 }

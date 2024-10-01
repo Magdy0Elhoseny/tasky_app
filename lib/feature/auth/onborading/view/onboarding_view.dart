@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:tasky_app/core/helper/Ui/custom_button.dart';
 import 'package:tasky_app/core/helper/theme/app_theme.dart';
-import 'package:tasky_app/feature/onborading/Controller/onboarding_controller.dart';
+import 'package:tasky_app/feature/auth/onborading/Controller/onboarding_controller.dart';
 
-import '../../../core/asset manager/asset_manager.dart';
+import '../../../../core/asset manager/asset_manager.dart';
 
 class OnboardingView extends StatelessWidget {
   const OnboardingView({super.key});
@@ -16,13 +17,14 @@ class OnboardingView extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(
               flex: 3,
-              child: SvgPicture.asset(
-                AssetManager.onbording,
-                fit: BoxFit.contain,
+              child: Image.asset(
+                AssetManager.onbording3,
+                fit: BoxFit.fill,
+                width: double.infinity,
+                height: double.infinity,
               ),
             ),
             Expanded(
@@ -48,22 +50,18 @@ class OnboardingView extends StatelessWidget {
                     const SizedBox(height: 32),
                     SizedBox(
                       width: double.infinity,
-                      child: ElevatedButton(
+                      child: CustomButton(
+                        backgroundColor: AppStyels.primaryColor,
+                        textColor: Theme.of(context).scaffoldBackgroundColor,
                         onPressed: controller.onGetStarted,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppStyels.primaryColor,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: Row(
+                        borderRadius: BorderRadius.circular(12),
+                        buttonChild: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
                               "Let's Start",
-                              style: AppStyels.textStyle16W700
+                              style: AppStyels.textStyle19W700
                                   .copyWith(color: Colors.white),
                             ),
                             const SizedBox(width: 8),
@@ -75,6 +73,15 @@ class OnboardingView extends StatelessWidget {
                           ],
                         ),
                       ),
+                      // ElevatedButton(
+
+                      //   style: ElevatedButton.styleFrom(
+                      //     backgroundColor: AppStyels.primaryColor,
+                      //     padding: const EdgeInsets.symmetric(vertical: 16),
+
+                      //   ),
+                      //   child:
+                      // ),
                     ),
                   ],
                 ),

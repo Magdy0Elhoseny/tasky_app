@@ -29,6 +29,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   cupertino_icons: ^1.0.8
+  country_code_picker: ^3.0.0
   dio: ^5.7.0
   flutter:
     sdk: flutter
@@ -54,6 +55,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/icons/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
   # For details regarding adding assets from package dependencies, see
@@ -66,13 +68,13 @@ flutter:
   fonts:
     - family: DM Sans
       fonts:
-        - asset: assets/fonts/Cairo-Regular.ttf
+        - asset: assets/fonts/DMSans-Regular.ttf
           weight: 400
-        - asset: assets/fonts/Cairo-SemiBold.ttf
+        - asset: assets/fonts/DMSans-SemiBold.ttf
           weight: 600
-        - asset: assets/fonts/Cairo-Bold.ttf
+        - asset: assets/fonts/DMSans-Bold.ttf
           weight: 700
-        - asset: assets/fonts/Cairo-Black.ttf
+        - asset: assets/fonts/DMSans-Black.ttf
           weight: 900 
   #   - family: Trajan Pro
   #     fonts:
