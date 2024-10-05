@@ -22,10 +22,10 @@ class LoginView extends StatelessWidget {
                 Expanded(
                   flex: 3,
                   child: Image.asset(
-                    AssetManager
-                        .onbording3, // Make sure to add this image to your assets
-                    width: double.infinity,
+                    AssetManager.onbording,
                     fit: BoxFit.fill,
+                    width: double.infinity,
+                    height: double.infinity,
                   ),
                 ),
                 Expanded(

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:tasky_app/core/utils/local_database.dart';
 
 class TokenManager {
@@ -21,5 +23,16 @@ class TokenManager {
   Future<void> clearTokens() async {
     await LocalStorage.deleteToken();
     await LocalStorage.deleteUserData();
+  }
+
+  Future<bool> refreshTokens(
+      String newAccessToken, String newRefreshToken) async {
+    try {
+      await saveTokens(newAccessToken, newRefreshToken);
+      return true;
+    } catch (e) {
+      log('Error refreshing tokens: $e');
+      return false;
+    }
   }
 }

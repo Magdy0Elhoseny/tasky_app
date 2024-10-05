@@ -21,7 +21,7 @@ class OnboardingView extends StatelessWidget {
             Expanded(
               flex: 3,
               child: Image.asset(
-                AssetManager.onbording3,
+                AssetManager.onbording,
                 fit: BoxFit.fill,
                 width: double.infinity,
                 height: double.infinity,

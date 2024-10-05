@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:tasky_app/core/helper/api/auth_service.dart';
+import 'package:tasky_app/core/helper/service/auth_service.dart';
 import 'package:tasky_app/core/route/controller/route_controller.dart';
 import 'package:tasky_app/feature/auth/login/model/user_data_model.dart';
 import 'package:tasky_app/feature/auth/register/models/register_response_model.dart';

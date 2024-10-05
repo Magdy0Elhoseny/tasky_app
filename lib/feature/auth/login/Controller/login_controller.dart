@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tasky_app/core/helper/api/auth_service.dart';
+import 'package:tasky_app/core/helper/service/auth_service.dart';
 import 'package:tasky_app/core/route/controller/route_controller.dart';
 import 'package:tasky_app/feature/auth/login/model/auth_model.dart';
 
@@ -51,7 +51,7 @@ class LoginController extends GetxController {
       if (authResponse != null && authResponse.id.isNotEmpty) {
         routeController.goToHome();
       } else {
-        errorMessage.value = 'Invalid credentials';
+        errorMessage.value = 'wrong phone or password';
       }
     } catch (e) {
       log('Login error: $e');

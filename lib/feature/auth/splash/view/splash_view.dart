@@ -22,7 +22,7 @@ class SplashView extends StatelessWidget {
                 scale: controller.scale.value,
                 duration: const Duration(seconds: 1),
                 child: SvgPicture.asset(
-                  AssetManager.splashLogo,
+                  AssetManager.splashLogosvg,
                   width: 200,
                   height: 200,
                 ),
