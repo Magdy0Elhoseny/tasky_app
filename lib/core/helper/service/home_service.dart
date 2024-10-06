@@ -16,10 +16,16 @@ class HomeService {
         final List<dynamic> data = response.data;
         return data.map((json) => Task.fromJson(json)).toList();
       } else {
-        throw Exception('Failed to load tasks');
+        throw DioException(
+          requestOptions: response.requestOptions,
+          response: response,
+          error: 'Failed to load tasks: ${response.statusMessage}',
+        );
       }
+    } on DioException catch (e) {
+      throw Exception('Network error: ${e.message}');
     } catch (e) {
-      throw Exception('Error: ${e.toString()}');
+      throw Exception('Unexpected error: ${e.toString()}');
     }
   }
 }

@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:tasky_app/core/asset%20manager/asset_manager.dart';
 import 'package:tasky_app/core/helper/theme/app_theme.dart';
-import 'package:tasky_app/core/asset manager/asset_manager.dart';
-import 'package:tasky_app/feature/add task/controller/add_task_controller.dart';
+import 'package:tasky_app/feature/Task%20Details/controller/details_controller.dart';
 
-class PriorityDropdownWidget extends StatelessWidget {
-  PriorityDropdownWidget({super.key});
-
-  final AddTaskController controller = Get.find<AddTaskController>();
+class StatusDetailsDropdown extends GetView<DetailsController> {
+  const StatusDetailsDropdown({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +23,16 @@ class PriorityDropdownWidget extends StatelessWidget {
             child: Obx(() => DropdownButton<String>(
                   icon: SvgPicture.asset(AssetManager.dropdownButtonIcon),
                   isExpanded: true,
-                  value: controller.selectedPriority.value,
-                  items: ['Low Priority', 'Medium Priority', 'High Priority']
+                  value: controller.selectedStatus.value.isNotEmpty
+                      ? controller.selectedStatus.value
+                      : controller.task.value!.status,
+                  items: ['waiting', 'in progress', 'finished']
                       .map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Row(
                         children: [
-                          SvgPicture.asset(AssetManager.flagIcon,
+                          const Icon(Icons.info_outline,
                               color: AppStyels.primaryColor),
                           const SizedBox(width: 8),
                           Text(value),
@@ -42,9 +42,10 @@ class PriorityDropdownWidget extends StatelessWidget {
                   }).toList(),
                   onChanged: (String? newValue) {
                     if (newValue != null) {
-                      controller.updatePriority(newValue);
+                      controller.selectedStatus.value = newValue;
                     }
                   },
+                  hint: const Text('Select Status'),
                 )),
           ),
         ),

@@ -6,7 +6,7 @@ import 'package:tasky_app/core/helper/theme/app_theme.dart';
 import 'package:tasky_app/feature/add%20task/controller/add_task_controller.dart';
 import 'package:tasky_app/feature/add%20task/views/widgets/add_image.dart';
 import 'package:tasky_app/feature/add%20task/views/widgets/due_date_field.dart';
-import 'package:tasky_app/feature/add%20task/views/widgets/prioritydropdownwidget.dart';
+import 'package:tasky_app/feature/add%20task/views/widgets/priority_addtask_dropdown_widget.dart';
 
 class AddTaskBinding extends Bindings {
   @override
@@ -45,7 +45,7 @@ class AddTaskView extends GetView<AddTaskController> {
             const SizedBox(height: 16),
             const Text('Priority', style: AppStyels.textStyleHint14W500),
             const SizedBox(height: 8),
-            PriorityDropdownWidget(),
+            PriorityaddtaskDropdownWidget(),
             const SizedBox(height: 16),
             DueDateField(),
             const SizedBox(height: 24),

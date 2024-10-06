@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:tasky_app/core/asset%20manager/asset_manager.dart';
 import 'package:tasky_app/core/helper/theme/app_theme.dart';
-import 'package:tasky_app/feature/add%20task/views/widgets/due_date_field.dart';
+import 'package:tasky_app/feature/Task%20Details/controller/details_controller.dart';
+import 'package:tasky_app/feature/Task%20Details/views/widgets/status_details_dropdown.dart';
+import 'package:tasky_app/feature/Task%20Details/views/widgets/priority_details_dropdown.dart';
 
-class DetailsView extends StatelessWidget {
+class DetailsView extends GetView<DetailsController> {
   const DetailsView({super.key});
 
   @override
@@ -15,89 +18,108 @@ class DetailsView extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Task Details', style: AppStyels.textStyle16W700),
           leading: IconButton(
-            onPressed: () {
-              Get.back();
-            },
+            onPressed: () => Get.back(),
             icon: SvgPicture.asset(AssetManager.arrowBackIcon),
           ),
           actions: [
             PopupMenuButton(
-                icon: const Icon(Icons.more_vert),
-                itemBuilder: (context) => [
-                      PopupMenuItem(
-                        value: () {},
-                        child: const Text('Edit',
-                            style: AppStyels.textStyle16W500),
-                      ),
-                      PopupMenuItem(
-                        value: () {},
-                        child: Text(
-                          'Delete',
-                          style: AppStyels.textStyle16W500.copyWith(
-                            color: const Color.fromRGBO(255, 125, 83, 1),
-                          ),
-                        ),
-                      ),
-                    ]),
+              icon: const Icon(Icons.more_vert),
+              itemBuilder: (context) => [
+                const PopupMenuItem(
+                  value: 'edit',
+                  child: Text('SaveEdit', style: AppStyels.textStyle16W500),
+                ),
+                PopupMenuItem(
+                  value: 'delete',
+                  child: Text(
+                    'Delete',
+                    style: AppStyels.textStyle16W500.copyWith(
+                      color: const Color.fromRGBO(255, 125, 83, 1),
+                    ),
+                  ),
+                ),
+              ],
+              onSelected: (value) {
+                if (value == 'edit') {
+                  controller.editTask();
+                } else if (value == 'delete') {
+                  // controller.deleteTask();
+                }
+              },
+            ),
           ],
         ),
-        body: Column(
-          children: [
-            const Text('Task Details', style: AppStyels.textStyle24W700),
-            Text('Details',
-                style: AppStyels.textStyleHint14W400
-                    .copyWith(color: AppStyels.textfeildColor)),
-            DueDateField(),
-            const TaskStatusWidget(),
-          ],
-        ),
+        body: Obx(() {
+          if (controller.isLoading.value) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          // final DetailsTaskModel task = controller.task.value!;
+          DateTime createdAtDate =
+              DateTime.parse(controller.taskfromhome.createdAt);
+          String formattedDate = DateFormat('dd-MM-yyyy').format(createdAtDate);
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (controller.task.value!.image.isNotEmpty)
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.network(
+                      controller.task.value!.image,
+                      width: double.infinity,
+                      height: 200,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                const SizedBox(height: 16),
+                Text(controller.task.value!.title,
+                    style: AppStyels.textStyle24W700),
+                const SizedBox(height: 8),
+                Text(
+                  controller.task.value!.desc,
+                  style: AppStyels.textStyleHint14W400
+                      .copyWith(color: AppStyels.textfeildColor),
+                ),
+                const SizedBox(height: 16),
+                _buildInfoCard('End Date', formattedDate, Icons.calendar_today),
+                const SizedBox(height: 8),
+                const PriorityDetailsDropdown(),
+                const SizedBox(height: 8),
+                const StatusDetailsDropdown(),
+                const SizedBox(height: 24),
+              ],
+            ),
+          );
+        }),
       ),
     );
   }
-}
 
-class TaskStatusWidget extends StatelessWidget {
-  const TaskStatusWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-          decoration: BoxDecoration(
-            color: AppStyels.secondaryColor.withOpacity(0.2),
-            borderRadius: BorderRadius.circular(12),
+  Widget _buildInfoCard(String label, String value, IconData icon) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: AppStyels.secondaryColor.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, color: AppStyels.primaryColor),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(label, style: AppStyels.textStyleHint12W500),
+                const SizedBox(height: 4),
+                Text(value, style: AppStyels.textStyle16W500),
+              ],
+            ),
           ),
-          child: DropdownButtonHideUnderline(
-            child: Obx(() => DropdownButton<String>(
-                  icon: SvgPicture.asset(AssetManager.dropdownButtonIcon),
-                  isExpanded: true,
-                  // value: controller.selectedPriority.value,
-                  items: ['Low Priority', 'Medium Priority', 'High Priority']
-                      .map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(AssetManager.flagIcon,
-                              color: AppStyels.primaryColor),
-                          const SizedBox(width: 8),
-                          Text(value),
-                        ],
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    if (newValue != null) {
-                      // controller.updatePriority(newValue);
-                    }
-                  },
-                )),
-          ),
-        ),
-      ],
+          const Icon(Icons.arrow_drop_down),
+        ],
+      ),
     );
   }
 }

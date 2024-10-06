@@ -1,5 +1,8 @@
+import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:tasky_app/core/constants/end_points.dart';
 import 'package:tasky_app/core/constants/urls.dart';
 
 class ImageUploadService {
@@ -9,22 +12,23 @@ class ImageUploadService {
     try {
       String fileName = imageFile.path.split('/').last;
       FormData formData = FormData.fromMap({
-        "image":
+        'files':
             await MultipartFile.fromFile(imageFile.path, filename: fileName),
       });
 
-      final response = await _dio.post(
-        '${AppUrls.baseUrl}/upload/image',
+      final response = await _dio.request(
+        '${AppUrls.baseUrl}${EndPoints.postUploadImage} ',
         data: formData,
         options: Options(
           headers: {'Authorization': 'Bearer $token'},
+          method: 'POST',
           validateStatus: (status) => status! < 500,
         ),
       );
 
       if (response.statusCode == 200) {
-        return response
-            .data['url']; // Adjust this based on the actual response structure
+        log(json.encode(response.data));
+        return response.data['url'];
       } else {
         throw DioException(
           requestOptions: response.requestOptions,
@@ -33,7 +37,7 @@ class ImageUploadService {
         );
       }
     } catch (e) {
-      throw Exception('Error uploading image: $e');
+      throw Exception('Error uploading image: ${e.toString()}');
     }
   }
 }

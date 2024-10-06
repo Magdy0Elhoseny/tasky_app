@@ -1,6 +1,8 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:get/get.dart';
+import 'package:dio/dio.dart';
+import 'package:tasky_app/core/asset%20manager/asset_manager.dart';
 import 'package:tasky_app/core/helper/service/add_task_service.dart';
 import 'package:tasky_app/core/helper/service/image_upload_service.dart';
 import 'package:tasky_app/core/utils/local_database.dart';
@@ -37,7 +39,7 @@ class AddTaskController extends GetxController {
       }
 
       final task = AddTaskModel(
-        image: uploadedImageUrl ?? '',
+        image: uploadedImageUrl ?? AssetManager.onbording,
         title: title.value,
         desc: description.value,
         priority: _convertPriority(selectedPriority.value),
@@ -50,7 +52,11 @@ class AddTaskController extends GetxController {
         Get.back();
       }
     } catch (e) {
-      Get.snackbar('Error', 'An error occurred: ${e.toString()}');
+      if (e is DioException) {
+        Get.snackbar('Error', 'Network error: ${e.message}');
+      } else {
+        Get.snackbar('Error', 'An unexpected error occurred: ${e.toString()}');
+      }
       log('Error adding task: $e');
     }
   }

@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 import 'package:tasky_app/core/route/config_routing.dart';
 import 'package:tasky_app/feature/Profile/controller/profile_controller.dart';
 import 'package:tasky_app/feature/Profile/views/profile_view.dart';
+import 'package:tasky_app/feature/Task%20Details/controller/details_controller.dart';
+import 'package:tasky_app/feature/Task%20Details/views/details_view.dart';
 import 'package:tasky_app/feature/add%20task/views/add_task_view.dart';
 import 'package:tasky_app/feature/auth/login/view/login_view.dart';
 import 'package:tasky_app/feature/auth/register/view/register_view.dart';
@@ -18,6 +20,7 @@ class AppRoutes {
   static const String register = '/register';
   static const String addTask = '/addTask';
   static const String profile = '/profile';
+  static const String details = '/details';
   static List<GetPage> getRoutes() {
     return [
       GetPage(name: configRoute, page: () => const ConfigRouting()),
@@ -36,6 +39,13 @@ class AppRoutes {
         page: () => const ProfileView(),
         binding: BindingsBuilder(() {
           Get.lazyPut(() => ProfileController());
+        }),
+      ),
+      GetPage(
+        name: details,
+        page: () => const DetailsView(),
+        binding: BindingsBuilder(() {
+          Get.lazyPut(() => DetailsController());
         }),
       ),
     ];

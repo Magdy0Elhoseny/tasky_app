@@ -52,12 +52,13 @@ class DioConfig {
     try {
       final newToken = await AuthService().refreshToken();
       if (newToken != null) {
+        await TokenManager()
+            .saveTokens(newToken, await TokenManager().getRefreshToken() ?? '');
         return true;
       }
     } catch (e) {
       log('Error refreshing token: $e');
     }
-    // If refresh fails, logout the user
     Get.find<RouteController>().logout();
     return false;
   }
