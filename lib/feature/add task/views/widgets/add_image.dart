@@ -18,13 +18,14 @@ class AddImageButton extends StatelessWidget {
       final ImagePicker picker = ImagePicker();
       final XFile? pickedFile = await picker.pickImage(
         source: source,
-        maxWidth: 1000,
-        maxHeight: 1000,
-        imageQuality: 100,
+        // maxWidth: 1000,
+        // maxHeight: 1000,
+        // imageQuality: 100,
       );
 
       if (pickedFile != null) {
         final File image = File(pickedFile.path);
+        log('Image path: $image');
         await controller.uploadImage(image);
       }
     } catch (e) {

@@ -28,7 +28,7 @@ class AuthService {
         return registerResponse;
       }
       return null;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       if (e.response != null) {
         log('Register error: ${e.response!.statusCode} - ${e.response!.data}');
         if (e.response!.statusCode == 500) {
@@ -79,8 +79,9 @@ class AuthService {
     }
 
     try {
-      final response = await _dio.post(EndPoints.getRefreshToken, data: {
-        'refresh_token': refreshToken,
+      final response =
+          await _dio.get(EndPoints.getRefreshToken, queryParameters: {
+        'token': refreshToken,
       });
 
       if (response.statusCode == 200 && response.data != null) {

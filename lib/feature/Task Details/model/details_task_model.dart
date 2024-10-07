@@ -5,6 +5,8 @@ class DetailsTaskModel {
   final String title;
   final String desc;
   final String priority;
+  final String createdAt;
+  final String updatedAt;
 
   DetailsTaskModel({
     required this.id,
@@ -13,6 +15,8 @@ class DetailsTaskModel {
     required this.title,
     required this.desc,
     required this.priority,
+    required this.createdAt,
+    required this.updatedAt,
   });
 
   factory DetailsTaskModel.fromJson(Map<String, dynamic> json) {
@@ -23,6 +27,8 @@ class DetailsTaskModel {
       title: json['title']?.toString() ?? '',
       desc: json['desc']?.toString() ?? '',
       priority: json['priority']?.toString() ?? '',
+      createdAt: json['createdAt']?.toString() ?? '',
+      updatedAt: json['updatedAt']?.toString() ?? '',
     );
   }
 
@@ -34,6 +40,8 @@ class DetailsTaskModel {
       'title': title,
       'desc': desc,
       'priority': priority,
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
     };
   }
 }

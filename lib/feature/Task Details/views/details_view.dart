@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tasky_app/core/asset%20manager/asset_manager.dart';
 import 'package:tasky_app/core/helper/theme/app_theme.dart';
 import 'package:tasky_app/feature/Task%20Details/controller/details_controller.dart';
@@ -55,7 +56,7 @@ class DetailsView extends GetView<DetailsController> {
           }
           // final DetailsTaskModel task = controller.task.value!;
           DateTime createdAtDate =
-              DateTime.parse(controller.taskfromhome.createdAt);
+              DateTime.parse(controller.task.value!.createdAt);
           String formattedDate = DateFormat('dd-MM-yyyy').format(createdAtDate);
           return SingleChildScrollView(
             padding: const EdgeInsets.all(16),
@@ -88,6 +89,13 @@ class DetailsView extends GetView<DetailsController> {
                 const SizedBox(height: 8),
                 const StatusDetailsDropdown(),
                 const SizedBox(height: 24),
+                Center(
+                  child: QrImageView(
+                    data: controller.task.value?.id ?? '',
+                    version: QrVersions.auto,
+                    size: MediaQuery.of(context).size.width * 0.8,
+                  ),
+                ),
               ],
             ),
           );

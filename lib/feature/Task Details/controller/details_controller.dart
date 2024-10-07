@@ -11,18 +11,25 @@ class DetailsController extends GetxController {
   final RxBool isLoading = true.obs;
   final RxString selectedPriority = ''.obs;
   final RxString selectedStatus = ''.obs;
-  final taskfromhome = Get.arguments as Task;
+
   @override
   void onInit() {
     super.onInit();
-    getOneTask();
+    final dynamic argument = Get.arguments;
+    if (argument is Task) {
+      getOneTask(argument.id);
+    } else if (argument is String) {
+      getOneTask(argument);
+    }
   }
 
-  void getOneTask() async {
+  void getOneTask(String taskId) async {
     try {
       isLoading.value = true;
-      final detailsTask = await _taskService.getOneTask(taskfromhome.id);
+      final detailsTask = await _taskService.getOneTask(taskId);
       task.value = detailsTask;
+      selectedPriority.value = detailsTask.priority;
+      selectedStatus.value = detailsTask.status;
     } catch (e) {
       Get.snackbar('Error', 'Failed to fetch task details: $e');
     } finally {
@@ -39,6 +46,8 @@ class DetailsController extends GetxController {
         title: task.value!.title,
         desc: task.value!.desc,
         priority: selectedPriority.value,
+        createdAt: task.value!.createdAt,
+        updatedAt: task.value!.updatedAt,
       );
       try {
         isLoading.value = true;
@@ -57,59 +66,59 @@ class DetailsController extends GetxController {
         isLoading.value = false;
       }
     }
+  }
 
-    void deleteTask() {
-      Get.defaultDialog(
-        title: 'Delete Task',
-        middleText: 'Are you sure you want to delete this task?',
-        textConfirm: 'Delete',
-        textCancel: 'Cancel',
-        confirmTextColor: Colors.white,
-        onConfirm: () async {
-          try {
-            isLoading.value = true;
-            await _taskService.deleteTask(taskfromhome.id);
-            Get.back(); //? Close the dialog
-            Get.back(); //! to the task list
-            Get.snackbar('Success', 'Task deleted successfully');
-          } catch (e) {
-            Get.snackbar('Error', 'Failed to delete task: $e');
-          } finally {
-            isLoading.value = false;
-          }
-        },
-      );
+  void deleteTask() {
+    Get.defaultDialog(
+      title: 'Delete Task',
+      middleText: 'Are you sure you want to delete this task?',
+      textConfirm: 'Delete',
+      textCancel: 'Cancel',
+      confirmTextColor: Colors.white,
+      onConfirm: () async {
+        try {
+          isLoading.value = true;
+          await _taskService.deleteTask(task.value!.id);
+          Get.back(); //? Close the dialog
+          Get.back(); //! to the task list
+          Get.snackbar('Success', 'Task deleted successfully');
+        } catch (e) {
+          Get.snackbar('Error', 'Failed to delete task: $e');
+        } finally {
+          isLoading.value = false;
+        }
+      },
+    );
+  }
+
+  String getToggleStatusButtonText() {
+    return task.value!.status.toLowerCase() == 'finished'
+        ? 'Mark as In Progress'
+        : 'Mark as Finished';
+  }
+
+  void updatePriority(String newPriority) async {
+    try {
+      isLoading.value = true;
+      selectedPriority.value = newPriority;
+      Get.snackbar('Success', 'Task priority updated successfully');
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to update task priority: $e');
+    } finally {
+      isLoading.value = false;
     }
+  }
 
-    String getToggleStatusButtonText() {
-      return task.value!.status.toLowerCase() == 'finished'
-          ? 'Mark as In Progress'
-          : 'Mark as Finished';
-    }
+  void updateStatus(String newStatus) async {
+    try {
+      isLoading.value = true;
 
-    void updatePriority(String newPriority) async {
-      try {
-        isLoading.value = true;
-        selectedPriority.value = newPriority;
-        Get.snackbar('Success', 'Task priority updated successfully');
-      } catch (e) {
-        Get.snackbar('Error', 'Failed to update task priority: $e');
-      } finally {
-        isLoading.value = false;
-      }
-    }
-
-    void updateStatus(String newStatus) async {
-      try {
-        isLoading.value = true;
-
-        selectedStatus.value = newStatus;
-        Get.snackbar('Success', 'Task status updated successfully');
-      } catch (e) {
-        Get.snackbar('Error', 'Failed to update task status: $e');
-      } finally {
-        isLoading.value = false;
-      }
+      selectedStatus.value = newStatus;
+      Get.snackbar('Success', 'Task status updated successfully');
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to update task status: $e');
+    } finally {
+      isLoading.value = false;
     }
   }
 }

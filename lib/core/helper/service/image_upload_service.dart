@@ -4,20 +4,24 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:tasky_app/core/constants/end_points.dart';
 import 'package:tasky_app/core/constants/urls.dart';
+import 'package:tasky_app/core/helper/api/dio_configration.dart';
 
 class ImageUploadService {
   final Dio _dio = Dio();
+  ImageUploadService() {
+    DioConfig().set(_dio);
+  }
 
   Future<String?> uploadImage(File imageFile, String token) async {
     try {
       String fileName = imageFile.path.split('/').last;
       FormData formData = FormData.fromMap({
-        'files':
+        'image':
             await MultipartFile.fromFile(imageFile.path, filename: fileName),
       });
 
       final response = await _dio.request(
-        '${AppUrls.baseUrl}${EndPoints.postUploadImage} ',
+        '${AppUrls.baseUrl}${EndPoints.postUploadImage}',
         data: formData,
         options: Options(
           headers: {'Authorization': 'Bearer $token'},

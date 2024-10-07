@@ -2,7 +2,7 @@ class EndPoints {
   static const String postLogin = "/auth/login";
   static const String postRegister = "/auth/register";
   static const String postLogout = "/auth/logout";
-  static const String getRefreshToken = "/auth/refresh-token?token=token";
+  static const String getRefreshToken = "/auth/refresh-token";
   static const String getProfile = "/auth/profile";
   static const String postUploadImage = "/upload/image";
   static const String getList = "/todos"; //! Required token, page
