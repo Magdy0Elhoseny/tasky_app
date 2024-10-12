@@ -71,7 +71,6 @@ class HomeView extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(32),
               ),
-              // materialTapTargetSize: MaterialTapTargetSize.values[1],
               child: const Icon(
                 Icons.add,
                 color: Colors.white,

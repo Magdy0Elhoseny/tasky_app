@@ -13,24 +13,22 @@ class AddImageButton extends StatelessWidget {
 
   AddImageButton({super.key});
 
-  Future<void> _getImage(ImageSource source) async {
+  Future<void> _pickImage(ImageSource source) async {
     try {
       final ImagePicker picker = ImagePicker();
       final XFile? pickedFile = await picker.pickImage(
         source: source,
-        // maxWidth: 1000,
-        // maxHeight: 1000,
-        // imageQuality: 100,
+        maxWidth: 1000,
+        maxHeight: 1000,
+        imageQuality: 85,
       );
 
       if (pickedFile != null) {
         final File image = File(pickedFile.path);
-        log('Image path: $image');
-        await controller.uploadImage(image);
+        controller.setPickedImage(image);
       }
     } catch (e) {
-      log('Error picking image: ==============$e');
-
+      log('Error picking image: $e');
       Get.snackbar('Error', 'Failed to pick image. Please try again.');
     }
   }
@@ -45,9 +43,9 @@ class AddImageButton extends StatelessWidget {
               border: Border.all(color: AppStyels.primaryColor),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: controller.imageUrl.isEmpty
+            child: controller.pickedImage == null
                 ? _buildAddImagePlaceholder()
-                : _buildUploadedImage(),
+                : Center(child: _buildPickedImage()),
           ),
         ));
   }
@@ -67,15 +65,13 @@ class AddImageButton extends StatelessWidget {
     );
   }
 
-  Widget _buildUploadedImage() {
+  Widget _buildPickedImage() {
     return Stack(
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(12),
-          child: Image.network(controller.imageUrl, fit: BoxFit.cover),
+          child: Image.file(controller.pickedImage!, fit: BoxFit.contain),
         ),
-        if (controller.isUploading)
-          const Center(child: CircularProgressIndicator()),
       ],
     );
   }
@@ -93,7 +89,7 @@ class AddImageButton extends StatelessWidget {
                 title: const Text('Choose from Gallery'),
                 onTap: () {
                   Navigator.pop(context);
-                  _getImage(ImageSource.gallery);
+                  _pickImage(ImageSource.gallery);
                 },
               ),
               ListTile(
@@ -101,7 +97,7 @@ class AddImageButton extends StatelessWidget {
                 title: const Text('Take a Photo'),
                 onTap: () {
                   Navigator.pop(context);
-                  _getImage(ImageSource.camera);
+                  _pickImage(ImageSource.camera);
                 },
               ),
             ],

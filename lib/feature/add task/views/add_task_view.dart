@@ -81,8 +81,8 @@ class AddTaskView extends GetView<AddTaskController> {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () {
-          controller.addTask();
+        onPressed: () async {
+          await controller.addTask();
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: AppStyels.primaryColor,

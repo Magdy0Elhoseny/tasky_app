@@ -15,11 +15,11 @@ class AddTaskModel {
 
   factory AddTaskModel.fromJson(Map<String, dynamic> json) {
     return AddTaskModel(
-      image: json['image'] ?? '',
-      title: json['title'] ?? '',
-      desc: json['desc'] ?? '',
-      priority: json['priority'] ?? '',
-      dueDate: json['dueDate'] ?? '',
+      image: json['image'] as String? ?? '',
+      title: json['title'] as String? ?? '',
+      desc: json['desc'] as String? ?? '',
+      priority: json['priority'] as String? ?? '',
+      dueDate: json['dueDate'] as String? ?? '',
     );
   }
   Map<String, dynamic> toJson() {

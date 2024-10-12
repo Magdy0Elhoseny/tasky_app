@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tasky_app/core/asset%20manager/asset_manager.dart';
 import 'package:tasky_app/core/helper/theme/app_theme.dart';
+import 'package:tasky_app/core/route/app_route.dart';
 import 'package:tasky_app/feature/Task%20Details/controller/details_controller.dart';
 import 'package:tasky_app/feature/Task%20Details/views/widgets/status_details_dropdown.dart';
 import 'package:tasky_app/feature/Task%20Details/views/widgets/priority_details_dropdown.dart';
@@ -43,6 +44,7 @@ class DetailsView extends GetView<DetailsController> {
               onSelected: (value) {
                 if (value == 'edit') {
                   controller.editTask();
+                  Get.offAllNamed(AppRoutes.home);
                 } else if (value == 'delete') {
                   // controller.deleteTask();
                 }

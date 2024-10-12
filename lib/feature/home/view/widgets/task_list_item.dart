@@ -4,13 +4,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:tasky_app/core/asset%20manager/asset_manager.dart';
 import 'package:tasky_app/core/helper/theme/app_theme.dart';
+import 'package:tasky_app/feature/home/Controller/home_controller.dart';
 import 'package:tasky_app/feature/home/model/task_model.dart';
 import 'package:tasky_app/core/route/app_route.dart';
 
 class TaskItem extends StatelessWidget {
   final Task task;
-
-  const TaskItem({super.key, required this.task});
+  final HomeController controller;
+  const TaskItem({super.key, required this.task, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +54,9 @@ class TaskItem extends StatelessWidget {
                                     style: AppStyels.textStyle16W500),
                               ),
                               PopupMenuItem(
-                                value: () {},
+                                value: () {
+                                  controller.deleteTask(task.id);
+                                },
                                 child: Text(
                                   'Delete',
                                   style: AppStyels.textStyle16W500.copyWith(

@@ -2,44 +2,48 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart';
-import 'package:tasky_app/core/asset%20manager/asset_manager.dart';
 import 'package:tasky_app/core/helper/service/add_task_service.dart';
-import 'package:tasky_app/core/helper/service/image_upload_service.dart';
 import 'package:tasky_app/core/utils/local_database.dart';
 import 'package:tasky_app/feature/add%20task/model/add_task_model.dart';
 
 class AddTaskController extends GetxController {
-  final ImageUploadService _imageUploadService = ImageUploadService();
   final AddTaskService _addTaskService = AddTaskService();
   final RxString _imageUrl = RxString('');
   final RxBool _isUploading = RxBool(false);
   final RxString title = RxString('');
   final RxString description = RxString('');
   final RxString dueDate = RxString('');
-  final RxString selectedPriority = 'Medium Priority'.obs;
+  final RxString selectedPriority = RxString('Medium Priority');
+  final Rx<File?> _pickedImage = Rx<File?>(null);
+  File? get pickedImage => _pickedImage.value;
 
   String get imageUrl => _imageUrl.value;
   bool get isUploading => _isUploading.value;
 
-  Future<void> addTask() async {
+  bool _validateInputs() {
     if (title.value.isEmpty ||
         description.value.isEmpty ||
-        dueDate.value.isEmpty) {
+        dueDate.value.isEmpty ||
+        _pickedImage.value == null) {
       Get.snackbar('Error', 'Please fill all required fields');
-      return;
+      return false;
     }
+    return true;
+  }
 
+  Future<void> addTask() async {
     final String token = LocalStorage.getToken() ?? '';
-
+    if (!_validateInputs()) return;
     try {
       String? uploadedImageUrl;
-      if (_imageUrl.value.isNotEmpty) {
-        uploadedImageUrl =
-            await _imageUploadService.uploadImage(File(_imageUrl.value), token);
+      if (_pickedImage.value != null) {
+        await uploadPickedImage();
+        uploadedImageUrl = _imageUrl.value;
       }
-
       final task = AddTaskModel(
-        image: uploadedImageUrl ?? AssetManager.onbording,
+        //uploadedImageUrl ?? ''
+        //'${AppUrls.baseUrl}/$uploadedImageUrl'
+        image: uploadedImageUrl!,
         title: title.value,
         desc: description.value,
         priority: _convertPriority(selectedPriority.value),
@@ -82,7 +86,7 @@ class AddTaskController extends GetxController {
     _isUploading.value = true;
     try {
       final String token = LocalStorage.getToken() ?? '';
-      final result = await _imageUploadService.uploadImage(image, token);
+      final result = await _addTaskService.uploadImage(image, token);
       if (result != null) {
         _imageUrl.value = result;
         log('Image uploaded successfully. URL: $result');
@@ -105,5 +109,15 @@ class AddTaskController extends GetxController {
 
   getDueDate() {
     return dueDate.value;
+  }
+
+  void setPickedImage(File image) {
+    _pickedImage.value = image;
+  }
+
+  Future<void> uploadPickedImage() async {
+    if (_pickedImage.value != null) {
+      await uploadImage(_pickedImage.value!);
+    }
   }
 }
