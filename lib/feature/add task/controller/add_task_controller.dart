@@ -34,36 +34,26 @@ class AddTaskController extends GetxController {
   }
 
   Future<void> addTask() async {
-    final String token = LocalStorage.getToken() ?? '';
     if (!_validateInputs()) return;
-    try {
-      String? uploadedImageUrl;
-      if (_pickedImage.value != null) {
-        await uploadPickedImage();
-        uploadedImageUrl = _imageUrl.value;
-      }
-      final task = AddTaskModel(
-        //uploadedImageUrl !
-        //'${AppUrls.baseUrl}/$uploadedImageUrl'
-        image: '${AppUrls.baseUrl}/$uploadedImageUrl',
-        title: title.value,
-        desc: description.value,
-        priority: _convertPriority(selectedPriority.value),
-        dueDate: dueDate.value,
-      );
+    // start loader
+    String? uploadedImageUrl =
+        await _addTaskService.uploadImage(_pickedImage.value!);
+    if (uploadedImageUrl == null) {
+      // stop loader
+      return;
+    }
+    final task = AddTaskModel(
+      image: uploadedImageUrl,
+      title: title.value,
+      desc: description.value,
+      priority: _convertPriority(selectedPriority.value),
+      dueDate: dueDate.value,
+    );
 
-      final result = await _addTaskService.addTask(task, token);
-      if (result) {
-        Get.snackbar('Success', 'Task added successfully');
-        Get.offAllNamed(AppRoutes.home);
-      }
-    } catch (e) {
-      if (e is DioException) {
-        Get.snackbar('Error', 'Network error: ${e.message}');
-      } else {
-        Get.snackbar('Error', 'An unexpected error occurred: ${e.toString()}');
-      }
-      log('Error adding task: $e');
+    final result = await _addTaskService.addTask(task);
+    if (result) {
+      Get.snackbar('Success', 'Task added successfully');
+      Get.offAllNamed(AppRoutes.home);
     }
   }
 
@@ -84,26 +74,25 @@ class AddTaskController extends GetxController {
     selectedPriority.value = priority;
   }
 
-  Future<void> uploadImage(File image) async {
-    _isUploading.value = true;
-    try {
-      final String token = LocalStorage.getToken() ?? '';
-      final result = await _addTaskService.uploadImage(image, token);
-      if (result != null) {
-        _imageUrl.value = result;
-        log('Image uploaded successfully. URL: $result');
-      } else {
-        log('Image upload failed');
-        Get.snackbar('Warning',
-            'Failed to upload image. You can still create the task without an image.');
-      }
-    } catch (e) {
-      log('Error uploading image: $e');
-      Get.snackbar('Error', 'Failed to upload image: ${e.toString()}');
-    } finally {
-      _isUploading.value = false;
-    }
-  }
+  // Future<void> uploadImage(File image) async {
+  //   _isUploading.value = true;
+  //   try {
+  //     final result = await _addTaskService.uploadImage(image, token);
+  //     if (result != null) {
+  //       _imageUrl.value = result;
+  //       log('Image uploaded successfully. URL: $result');
+  //     } else {
+  //       log('Image upload failed');
+  //       Get.snackbar('Warning',
+  //           'Failed to upload image. You can still create the task without an image.');
+  //     }
+  //   } catch (e) {
+  //     log('Error uploading image: $e');
+  //     Get.snackbar('Error', 'Failed to upload image: ${e.toString()}');
+  //   } finally {
+  //     _isUploading.value = false;
+  //   }
+  // }
 
   void updateDueDate(String date) {
     dueDate.value = date;
@@ -117,9 +106,9 @@ class AddTaskController extends GetxController {
     _pickedImage.value = image;
   }
 
-  Future<void> uploadPickedImage() async {
-    if (_pickedImage.value != null) {
-      await uploadImage(_pickedImage.value!);
-    }
-  }
+  // Future<void> uploadPickedImage() async {
+  //   if (_pickedImage.value != null) {
+  //     await uploadImage(_pickedImage.value!);
+  //   }
+  // }
 }

@@ -14,12 +14,19 @@ class HomeController extends GetxController {
   final TaskService _taskService = TaskService();
   RxList<Task> tasks = <Task>[].obs;
   RxBool isLoading = true.obs;
-  RxString selectedFilter = 'All'.obs;
+  late RxString selectedFilter;
+  List<String> filterTypes = [
+    'All',
+    'In Progress',
+    'Waiting',
+    'Finished',
+  ];
   RxList<Task> filteredTasks = <Task>[].obs;
 
   @override
   void onInit() {
     super.onInit();
+    selectedFilter = 'All'.obs;
     fetchTasks();
   }
 
@@ -49,22 +56,11 @@ class HomeController extends GetxController {
   }
 
   void _applyFilter() {
-    switch (selectedFilter.value) {
-      case 'All':
-        filteredTasks.assignAll(tasks);
-        break;
-      case 'Inprogress':
-        filteredTasks.assignAll(
-            tasks.where((task) => task.status.toLowerCase() == 'in progress'));
-        break;
-      case 'Waiting':
-        filteredTasks.assignAll(
-            tasks.where((task) => task.status.toLowerCase() == 'waiting'));
-        break;
-      case 'Finished':
-        filteredTasks.assignAll(
-            tasks.where((task) => task.status.toLowerCase() == 'finished'));
-        break;
+    if (selectedFilter.value == 'All') {
+      return filteredTasks.assignAll(tasks);
+    } else {
+      filteredTasks.assignAll(tasks.where((task) =>
+          task.status.toLowerCase() == selectedFilter.value.toLowerCase()));
     }
   }
 

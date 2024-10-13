@@ -11,7 +11,7 @@ import 'core/helper/theme/app_theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await LocalStorage.init();
-  DependencyInjection.init();
+  // DependencyInjection.init();
   Get.put(RouteController());
   runApp(const MyApp());
 }

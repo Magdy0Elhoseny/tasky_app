@@ -6,16 +6,12 @@ import '../api/dio_configration.dart';
 import '../../../feature/Profile/model/profile_model.dart';
 
 class ProfileService {
-  final DioConfig _dioConfig = Get.find<DioConfig>();
-
-  ProfileService() {
-    _dioConfig.set(Dio());
-  }
+  final DioConfig config = DioConfig();
 
   Future<ProfileModel> getProfile() async {
     try {
       final token = LocalStorage.getToken();
-      final response = await _dioConfig.dio.get(
+      final response = await config.dio.get(
         EndPoints.getProfile,
         options: Options(headers: {'Authorization': 'Bearer $token'}),
       );

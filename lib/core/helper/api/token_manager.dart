@@ -11,13 +11,13 @@ class TokenManager {
     await LocalStorage.saveUserData({refreshTokenKey: refreshToken});
   }
 
-  Future<String?> getAccessToken() async {
+  String? getAccessToken() {
     return LocalStorage.getToken();
   }
 
   static Future<String?> getRefreshToken() async {
     final userData = await LocalStorage.getUserData();
-    return userData?['refreshToken'] as String?;
+    return userData?['refresh_token'] as String?;
   }
 
   Future<void> clearTokens() async {

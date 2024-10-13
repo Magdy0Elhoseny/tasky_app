@@ -10,8 +10,22 @@ import 'package:tasky_app/core/route/controller/route_controller.dart';
 class DioConfig {
   late Dio dio;
 
-  void set(Dio dioInstance) {
-    dio = dioInstance;
+  // Private constructor
+  DioConfig._internal() {
+    dio = Dio();
+    _initializeDio();
+  }
+
+  // Static instance
+  static final DioConfig _instance = DioConfig._internal();
+
+  // Factory constructor to return the same instance
+  factory DioConfig() {
+    return _instance;
+  }
+
+  // Initialize Dio with settings and interceptors
+  void _initializeDio() {
     dio.options.baseUrl = AppUrls.baseUrl;
     dio.options.connectTimeout = const Duration(milliseconds: 60000);
     dio.options.receiveTimeout = const Duration(milliseconds: 60000);
@@ -19,7 +33,7 @@ class DioConfig {
     dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
-          final token = await TokenManager().getAccessToken();
+          final token = TokenManager().getAccessToken();
           if (token != null) {
             options.headers['Authorization'] = 'Bearer $token';
           }
@@ -28,25 +42,16 @@ class DioConfig {
         onError: (DioException error, ErrorInterceptorHandler handler) async {
           if (error.response?.statusCode == 401) {
             try {
-              final AuthService authService = Get.find<AuthService>();
-              final String? newToken = await authService.refreshToken();
-              if (newToken != null) {
-                updateToken(newToken);
-                final opts = Options(
-                  method: error.requestOptions.method,
-                  headers: error.requestOptions.headers,
-                );
-                opts.headers?['Authorization'] = 'Bearer $newToken';
-                final clonedRequest = await dio.request(
-                  error.requestOptions.path,
-                  options: opts,
-                  data: error.requestOptions.data,
-                  queryParameters: error.requestOptions.queryParameters,
-                );
-                return handler.resolve(clonedRequest);
+              final AuthService authService = AuthService();
+              bool isSuccess = await authService.refreshTokenFromApi();
+              if (!isSuccess) {
+                Get.find<RouteController>().logout();
+                return handler.next(error);
               }
+              error.requestOptions.headers['Authorization'] =
+                  'Bearer ${TokenManager().getAccessToken()}';
+              return handler.resolve(await dio.fetch(error.requestOptions));
             } catch (e) {
-              // If token refresh fails, logout the user
               Get.find<RouteController>().logout();
               return handler.next(error);
             }
@@ -69,6 +74,7 @@ class DioConfig {
     }
   }
 
+  // Method to update the token in Dio
   void updateToken(String newToken) {
     dio.options.headers['Authorization'] = 'Bearer $newToken';
   }

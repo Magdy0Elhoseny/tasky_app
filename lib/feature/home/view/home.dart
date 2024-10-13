@@ -16,12 +16,12 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final HomeController controller = Get.put(HomeController());
-    return SafeArea(
-      child: Scaffold(
-        body: RefreshIndicator(
+    return Scaffold(
+      body: SafeArea(
+        child: RefreshIndicator(
           onRefresh: () => controller.fetchTasks(),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -31,7 +31,8 @@ class HomeView extends StatelessWidget {
                   style: AppStyels.textStyle16W700,
                 ),
                 const SizedBox(height: 12),
-                buildTaskFilter(),
+                HomeScreenFilter(),
+                const SizedBox(height: 20),
                 Expanded(
                   child: Obx(() {
                     if (controller.isLoading.value) {
@@ -45,40 +46,40 @@ class HomeView extends StatelessWidget {
             ),
           ),
         ),
-        floatingActionButton: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            FloatingActionButton(
-              heroTag: 'qr',
-              onPressed: () async {
-                final result = await Get.to(() => const QRViewExample());
-                if (result != null) {
-                  Get.toNamed(AppRoutes.details, arguments: result);
-                }
-              },
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(32),
-              ),
-              child: SvgPicture.asset(AssetManager.qrIcon),
+      ),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            heroTag: 'qr',
+            onPressed: () async {
+              final result = await Get.to(() => const QRViewExample());
+              if (result != null) {
+                Get.toNamed(AppRoutes.details, arguments: result);
+              }
+            },
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(32),
             ),
-            const SizedBox(height: 20),
-            FloatingActionButton(
-              heroTag: 'addTask',
-              onPressed: () {
-                controller.goToAddTask();
-              },
-              backgroundColor: AppStyels.primaryColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(32),
-              ),
-              child: const Icon(
-                Icons.add,
-                color: Colors.white,
-                size: 32,
-              ),
+            child: SvgPicture.asset(AssetManager.qrIcon),
+          ),
+          const SizedBox(height: 20),
+          FloatingActionButton(
+            heroTag: 'addTask',
+            onPressed: () {
+              controller.goToAddTask();
+            },
+            backgroundColor: AppStyels.primaryColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(32),
             ),
-          ],
-        ),
+            child: const Icon(
+              Icons.add,
+              color: Colors.white,
+              size: 32,
+            ),
+          ),
+        ],
       ),
     );
   }

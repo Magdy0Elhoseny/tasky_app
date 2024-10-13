@@ -10,16 +10,12 @@ import 'package:tasky_app/feature/auth/login/model/auth_model.dart';
 import 'package:tasky_app/feature/auth/register/models/register_response_model.dart';
 
 class AuthService {
-  final DioConfig _dioConfig = Get.find<DioConfig>();
-
-  AuthService() {
-    _dioConfig.set(Dio());
-  }
+  final DioConfig config = DioConfig();
 
   Future<RegisterResponse?> register(Map<String, dynamic> userData) async {
     try {
       final response =
-          await _dioConfig.dio.post(EndPoints.postRegister, data: userData);
+          await config.dio.post(EndPoints.postRegister, data: userData);
 
       if (response.statusCode == 201 && response.data != null) {
         final registerResponse =
@@ -55,7 +51,7 @@ class AuthService {
 
   Future<AuthResponse?> login(String phone, String password) async {
     try {
-      final response = await _dioConfig.dio.post(EndPoints.postLogin, data: {
+      final response = await config.dio.post(EndPoints.postLogin, data: {
         'phone': phone,
         'password': password,
       });
@@ -77,33 +73,27 @@ class AuthService {
     }
   }
 
-  Future<String?> refreshToken() async {
+  Future<bool> refreshTokenFromApi() async {
     final String? refreshToken = await TokenManager.getRefreshToken();
     if (refreshToken == null) {
-      return null;
+      log('refreshToken not found');
+      Get.find<RouteController>().logout();
+      return false;
     }
-
     try {
-      final response = await _dioConfig.dio.get(
+      final response = await config.dio.get(
         EndPoints.getRefreshToken,
         queryParameters: {'token': refreshToken},
       );
 
-      if (response.statusCode == 200 && response.data != null) {
-        final Map<String, dynamic> data = response.data as Map<String, dynamic>;
-        final newAccessToken = data['access_token'];
-        if (newAccessToken != null && newAccessToken is String) {
-          await TokenManager().saveTokens(newAccessToken, refreshToken);
-          Get.find<DioConfig>().updateToken(newAccessToken);
-          return newAccessToken;
-        }
-      }
+      final newAccessToken = response.data['access_token'];
+      await LocalStorage.saveToken(newAccessToken);
+      return true;
     } catch (e) {
+      log('refreshToken not found');
+      Get.find<RouteController>().logout();
       log('=======auth service=======Error refreshing token: $e');
+      return false;
     }
-
-    await TokenManager().clearTokens();
-    Get.find<RouteController>().logout();
-    return null;
   }
 }

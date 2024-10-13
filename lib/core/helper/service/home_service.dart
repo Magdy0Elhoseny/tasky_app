@@ -5,7 +5,7 @@ import 'package:tasky_app/core/helper/api/dio_configration.dart';
 import 'package:tasky_app/feature/home/model/task_model.dart';
 
 class HomeService {
-  final DioConfig _dioConfig = Get.find<DioConfig>();
+  final DioConfig _dioConfig = DioConfig();
 
   Future<List<Task>> getTasks() async {
     try {
