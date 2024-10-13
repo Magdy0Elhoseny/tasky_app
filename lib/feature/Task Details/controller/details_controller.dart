@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tasky_app/core/route/app_route.dart';
 import 'package:tasky_app/core/utils/local_database.dart';
 import 'package:tasky_app/feature/Task%20Details/model/details_task_model.dart';
 import 'package:tasky_app/core/helper/service/task_service.dart';
@@ -57,6 +58,7 @@ class DetailsController extends GetxController {
             task.value!.status != selectedStatus.value) {
           await _taskService.editTask(token!, updatedTask);
           Get.snackbar('Success', 'Task updated successfully');
+          Get.offAllNamed(AppRoutes.home);
         } else {
           Get.snackbar('Error', 'No changes made');
         }

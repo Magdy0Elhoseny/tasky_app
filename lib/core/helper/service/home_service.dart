@@ -1,16 +1,15 @@
 import 'package:dio/dio.dart';
+import 'package:get/get.dart';
 import 'package:tasky_app/core/constants/end_points.dart';
 import 'package:tasky_app/core/helper/api/dio_configration.dart';
 import 'package:tasky_app/feature/home/model/task_model.dart';
 
 class HomeService {
-  final Dio _dio = Dio();
-  HomeService() {
-    DioConfig().set(_dio);
-  }
+  final DioConfig _dioConfig = Get.find<DioConfig>();
+
   Future<List<Task>> getTasks() async {
     try {
-      final response = await _dio.get(EndPoints.getList);
+      final response = await _dioConfig.dio.get(EndPoints.getList);
 
       if (response.statusCode == 200) {
         final List<dynamic> data = response.data;
@@ -23,6 +22,10 @@ class HomeService {
         );
       }
     } on DioException catch (e) {
+      if (e.response?.statusCode == 401) {
+        // Let the interceptor handle the token refresh
+        rethrow;
+      }
       throw Exception('Network error: ${e.message}');
     } catch (e) {
       throw Exception('Unexpected error: ${e.toString()}');

@@ -32,9 +32,10 @@ class LocalStorage {
     await box.put(_userKey, userData);
   }
 
-  static Map<String, dynamic>? getUserData() {
-    final box = Hive.box(_userBox);
-    return box.get(_userKey);
+  static Future<Map<String, dynamic>?> getUserData() async {
+    final box = await Hive.openBox(_userBox);
+    final data = box.get(_userKey);
+    return data != null ? Map<String, dynamic>.from(data) : null;
   }
 
   static Future<void> deleteUserData() async {

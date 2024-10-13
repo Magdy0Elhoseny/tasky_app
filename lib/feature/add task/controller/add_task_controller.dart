@@ -2,7 +2,9 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart';
+import 'package:tasky_app/core/constants/urls.dart';
 import 'package:tasky_app/core/helper/service/add_task_service.dart';
+import 'package:tasky_app/core/route/app_route.dart';
 import 'package:tasky_app/core/utils/local_database.dart';
 import 'package:tasky_app/feature/add%20task/model/add_task_model.dart';
 
@@ -41,9 +43,9 @@ class AddTaskController extends GetxController {
         uploadedImageUrl = _imageUrl.value;
       }
       final task = AddTaskModel(
-        //uploadedImageUrl ?? ''
+        //uploadedImageUrl !
         //'${AppUrls.baseUrl}/$uploadedImageUrl'
-        image: uploadedImageUrl!,
+        image: '${AppUrls.baseUrl}/$uploadedImageUrl',
         title: title.value,
         desc: description.value,
         priority: _convertPriority(selectedPriority.value),
@@ -53,7 +55,7 @@ class AddTaskController extends GetxController {
       final result = await _addTaskService.addTask(task, token);
       if (result) {
         Get.snackbar('Success', 'Task added successfully');
-        Get.back();
+        Get.offAllNamed(AppRoutes.home);
       }
     } catch (e) {
       if (e is DioException) {

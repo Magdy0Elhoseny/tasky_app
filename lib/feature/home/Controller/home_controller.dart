@@ -30,8 +30,9 @@ class HomeController extends GetxController {
       tasks.assignAll(fetchedTasks);
       _applyFilter();
     } catch (e) {
-      if (e is DioException && e.response?.statusCode == 403) {
-        Get.snackbar('Error', 'Your session has expired. Please login again.');
+      if (e is DioException && e.response?.statusCode == 401) {
+        // Token refresh failed, user needs to log in again
+        Get.snackbar('Session Expired', 'Please log in again.');
         Get.find<RouteController>().logout();
       } else {
         Get.snackbar('Error', 'Failed to fetch tasks. Please try again.');
