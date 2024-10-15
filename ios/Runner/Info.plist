@@ -7,7 +7,7 @@
 	<key>io.flutter.embedded_views_preview</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>This app needs camera access to take photos to upload to the task</string>
+	<string>This app needs camera access to take photos to upload to the task , scan QR codes</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This app needs photos access to get images from the photo library</string>
 	<key>CFBundleDevelopmentRegion</key>

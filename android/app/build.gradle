@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.tasky_app"
+    namespace = "tasky"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
