@@ -44,7 +44,7 @@ class DetailsView extends GetView<DetailsController> {
                 if (value == 'edit') {
                   controller.editTask();
                 } else if (value == 'delete') {
-                  // controller.deleteTask();
+                  controller.deleteTask();
                 }
               },
             ),

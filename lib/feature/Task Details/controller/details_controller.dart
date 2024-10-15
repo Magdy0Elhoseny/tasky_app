@@ -81,8 +81,8 @@ class DetailsController extends GetxController {
         try {
           isLoading.value = true;
           await _taskService.deleteTask(task.value!.id);
-          Get.back(); //? Close the dialog
-          Get.back(); //! to the task list
+          Get.offAllNamed(AppRoutes.home);
+
           Get.snackbar('Success', 'Task deleted successfully');
         } catch (e) {
           Get.snackbar('Error', 'Failed to delete task: $e');

@@ -4,14 +4,13 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasky_app/core/helper/service/home_service.dart';
-import 'package:tasky_app/core/helper/service/task_service.dart';
 import 'package:tasky_app/core/route/app_route.dart';
 import 'package:tasky_app/core/route/controller/route_controller.dart';
 import 'package:tasky_app/feature/home/model/task_model.dart';
 
 class HomeController extends GetxController {
   final HomeService _homeService = HomeService();
-  final TaskService _taskService = TaskService();
+
   RxList<Task> tasks = <Task>[].obs;
   RxBool isLoading = true.obs;
   late RxString selectedFilter;
@@ -38,7 +37,6 @@ class HomeController extends GetxController {
       _applyFilter();
     } catch (e) {
       if (e is DioException && e.response?.statusCode == 401) {
-        // Token refresh failed, user needs to log in again
         Get.snackbar('Session Expired', 'Please log in again.');
         Get.find<RouteController>().logout();
       } else {
@@ -86,9 +84,10 @@ class HomeController extends GetxController {
       onConfirm: () async {
         try {
           isLoading.value = true;
-          await _taskService.deleteTask(taskId);
-          Get.back(); //? Close the dialog
-          Get.back(); //! to the task list
+
+          Get.back();
+          await _homeService.deleteTask(taskId);
+          fetchTasks();
           Get.snackbar('Success', 'Task deleted successfully');
         } catch (e) {
           Get.snackbar('Error', 'Failed to delete task: $e');

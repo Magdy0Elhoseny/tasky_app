@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:get/get.dart';
 import 'package:tasky_app/core/constants/end_points.dart';
 import 'package:tasky_app/core/helper/api/dio_configration.dart';
 import 'package:tasky_app/feature/home/model/task_model.dart';
@@ -29,6 +28,18 @@ class HomeService {
       throw Exception('Network error: ${e.message}');
     } catch (e) {
       throw Exception('Unexpected error: ${e.toString()}');
+    }
+  }
+
+  Future<void> deleteTask(String taskId) async {
+    try {
+      final response =
+          await _dioConfig.dio.delete('${EndPoints.delete}/$taskId');
+      if (response.statusCode != 200) {
+        throw Exception('Failed to delete task');
+      }
+    } catch (e) {
+      throw Exception('Error deleting task: $e');
     }
   }
 }

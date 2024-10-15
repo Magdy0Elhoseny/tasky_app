@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:get/get.dart';
 import '../../constants/end_points.dart';
 import '../../utils/local_database.dart';
 import '../api/dio_configration.dart';

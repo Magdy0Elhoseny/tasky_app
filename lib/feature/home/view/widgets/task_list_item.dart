@@ -46,17 +46,22 @@ class TaskItem extends StatelessWidget {
                       ),
                     ),
                     PopupMenuButton(
+                        onSelected: (value) {
+                          if (value == 'edit') {
+                            Get.offAllNamed(AppRoutes.details, arguments: task);
+                          } else if (value == 'delete') {
+                            controller.deleteTask(task.id);
+                          }
+                        },
                         icon: const Icon(Icons.more_vert),
                         itemBuilder: (context) => [
-                              PopupMenuItem(
-                                value: () {},
-                                child: const Text('Edit',
+                              const PopupMenuItem(
+                                value: 'edit',
+                                child: Text('Edit',
                                     style: AppStyels.textStyle16W500),
                               ),
                               PopupMenuItem(
-                                value: () {
-                                  controller.deleteTask(task.id);
-                                },
+                                value: 'delete',
                                 child: Text(
                                   'Delete',
                                   style: AppStyels.textStyle16W500.copyWith(

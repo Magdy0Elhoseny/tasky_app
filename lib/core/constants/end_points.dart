@@ -10,4 +10,5 @@ class EndPoints {
   static const String postCreate = "/todos";
   static const String putEdit = "/todos";
   static const String delete = "/todos";
+  static const String images = "/images/";
 }

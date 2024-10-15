@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:get/get.dart';
 import 'package:tasky_app/core/constants/end_points.dart';
 import 'package:tasky_app/core/helper/api/dio_configration.dart';
 import 'package:tasky_app/feature/Task%20Details/model/details_task_model.dart';
@@ -40,7 +39,6 @@ class TaskService {
 
   Future<void> deleteTask(String taskId) async {
     try {
-      //final taskId = task.id;
       final response = await config.dio.delete('${EndPoints.delete}/$taskId');
       if (response.statusCode != 200) {
         throw Exception('Failed to delete task');

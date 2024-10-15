@@ -1,12 +1,11 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:get/get.dart';
-import 'package:dio/dio.dart';
 import 'package:tasky_app/core/constants/urls.dart';
 import 'package:tasky_app/core/helper/service/add_task_service.dart';
 import 'package:tasky_app/core/route/app_route.dart';
-import 'package:tasky_app/core/utils/local_database.dart';
 import 'package:tasky_app/feature/add%20task/model/add_task_model.dart';
+
+import '../../../core/constants/end_points.dart';
 
 class AddTaskController extends GetxController {
   final AddTaskService _addTaskService = AddTaskService();
@@ -43,7 +42,7 @@ class AddTaskController extends GetxController {
       return;
     }
     final task = AddTaskModel(
-      image: uploadedImageUrl,
+      image: "${AppUrls.baseUrl}${EndPoints.images}$uploadedImageUrl",
       title: title.value,
       desc: description.value,
       priority: _convertPriority(selectedPriority.value),
