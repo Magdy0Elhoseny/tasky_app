@@ -2,18 +2,21 @@ import 'package:flutter/material.dart';
 
 class AppStyels {
   static const Color primaryColor = Color.fromRGBO(95, 51, 225, 1);
-  static const Color secondaryColor = Color(0xFFB0A6F3);
-  static const Color tertiaryColor = Color(0xFFF3E5F5);
+  static const Color secondaryColor = Color.fromRGBO(240, 236, 255, 1);
   static const Color accentColor = Color(0xFFE1BEE7);
-  static const Color backgroundColor = Color(0xFFF5F5F5);
-  static const Color textColor = Color(0xFF333333);
+  static const Color backgroundColor = Color.fromRGBO(255, 255, 255, 1);
+  static const Color textColor = Color.fromRGBO(36, 37, 44, 0.6);
   static const Color textColorSecondary = Color(0xFF666666);
   static const Color textfeildColor = Color(0xFF999999);
   static const Color textColorQuaternary = Color(0xFFCCCCCC);
 
   static ThemeData appTheme = ThemeData(
-    useMaterial3: true,
     colorScheme: ColorScheme.fromSeed(seedColor: AppStyels.primaryColor),
+    scaffoldBackgroundColor: AppStyels.backgroundColor,
+    appBarTheme: AppBarTheme(
+      backgroundColor: AppStyels.backgroundColor,
+    ),
+    primaryColor: AppStyels.primaryColor,
   );
 
   static final textFieldBorder = OutlineInputBorder(
@@ -83,6 +86,11 @@ class AppStyels {
   static const textStyleHint12W400 = TextStyle(
     fontFamily: 'DMSans',
     fontSize: 12,
+    fontWeight: FontWeight.w400,
+  );
+  static const textStyleHint9W400 = TextStyle(
+    fontFamily: 'DMSans',
+    fontSize: 9,
     fontWeight: FontWeight.w400,
   );
 }

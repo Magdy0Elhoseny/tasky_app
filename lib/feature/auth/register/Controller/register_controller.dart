@@ -77,7 +77,7 @@ class RegisterController extends GetxController {
       } else {
         errorMessage.value = 'Registration failed. Please try again.';
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       log('DioError: ${e.toString()}');
       if (e.response != null) {
         log('Response data: ${e.response!.data}');

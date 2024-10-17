@@ -10,21 +10,17 @@ import 'package:tasky_app/core/route/controller/route_controller.dart';
 class DioConfig {
   late Dio dio;
 
-  // Private constructor
   DioConfig._internal() {
     dio = Dio();
     _initializeDio();
   }
 
-  // Static instance
   static final DioConfig _instance = DioConfig._internal();
 
-  // Factory constructor to return the same instance
   factory DioConfig() {
     return _instance;
   }
 
-  // Initialize Dio with settings and interceptors
   void _initializeDio() {
     dio.options.baseUrl = AppUrls.baseUrl;
     dio.options.connectTimeout = const Duration(milliseconds: 60000);
@@ -41,20 +37,17 @@ class DioConfig {
         },
         onError: (DioException error, ErrorInterceptorHandler handler) async {
           if (error.response?.statusCode == 401) {
-            try {
-              final AuthService authService = AuthService();
-              bool isSuccess = await authService.refreshTokenFromApi();
-              if (!isSuccess) {
+            bool isSuccess = await AuthService().refreshTokenFromApi();
+            if (!isSuccess) {
+              // Only log out if the refresh token is actually null, not on failed login attempts
+              if (TokenManager.getRefreshToken() == null) {
                 Get.find<RouteController>().logout();
-                return handler.next(error);
               }
-              error.requestOptions.headers['Authorization'] =
-                  'Bearer ${TokenManager().getAccessToken()}';
-              return handler.resolve(await dio.fetch(error.requestOptions));
-            } catch (e) {
-              Get.find<RouteController>().logout();
               return handler.next(error);
             }
+            error.requestOptions.headers['Authorization'] =
+                'Bearer ${TokenManager().getAccessToken()}';
+            return handler.resolve(await dio.fetch(error.requestOptions));
           }
           return handler.next(error);
         },
@@ -74,7 +67,6 @@ class DioConfig {
     }
   }
 
-  // Method to update the token in Dio
   void updateToken(String newToken) {
     dio.options.headers['Authorization'] = 'Bearer $newToken';
   }

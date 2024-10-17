@@ -5,7 +5,7 @@ import 'package:tasky_app/core/utils/local_database.dart';
 import 'package:tasky_app/feature/auth/login/view/login_view.dart';
 import 'package:tasky_app/feature/auth/splash/view/splash_view.dart';
 import 'package:tasky_app/feature/auth/onborading/view/onboarding_view.dart';
-import 'package:tasky_app/feature/home/view/home.dart';
+import 'package:tasky_app/feature/home/view/home_view.dart';
 
 class RouteController extends GetxController {
   final RxBool _isLoading = true.obs;

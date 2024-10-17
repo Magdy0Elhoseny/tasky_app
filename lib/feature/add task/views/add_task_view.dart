@@ -22,7 +22,11 @@ class AddTaskView extends GetView<AddTaskController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add new task', style: AppStyels.textStyle16W700),
+        title: const Text('Add new task'),
+        titleTextStyle: AppStyels.textStyle16W700.copyWith(color: Colors.black),
+        centerTitle: false,
+        titleSpacing: 0,
+        backgroundColor: AppStyels.backgroundColor,
         leading: IconButton(
           onPressed: () {
             Get.back();
@@ -61,15 +65,16 @@ class AddTaskView extends GetView<AddTaskController> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: AppStyels.textStyleHint14W500),
+        Text(label, style: AppStyels.textStyleHint12W400),
         const SizedBox(height: 8),
         TextField(
           maxLines: maxLines,
           onChanged: onChanged,
           decoration: InputDecoration(
             hintText: hint,
+            hintStyle: AppStyels.textStyleHint14W400,
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(10),
             ),
           ),
         ),
@@ -88,7 +93,7 @@ class AddTaskView extends GetView<AddTaskController> {
           backgroundColor: AppStyels.primaryColor,
           padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(10),
           ),
         ),
         child: Text('Add task',

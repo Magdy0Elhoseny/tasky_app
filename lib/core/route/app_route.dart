@@ -5,10 +5,11 @@ import 'package:tasky_app/feature/Profile/views/profile_view.dart';
 import 'package:tasky_app/feature/Task%20Details/controller/details_controller.dart';
 import 'package:tasky_app/feature/Task%20Details/views/details_view.dart';
 import 'package:tasky_app/feature/add%20task/views/add_task_view.dart';
+import 'package:tasky_app/feature/auth/login/Controller/login_controller.dart';
 import 'package:tasky_app/feature/auth/login/view/login_view.dart';
 import 'package:tasky_app/feature/auth/register/view/register_view.dart';
 import 'package:tasky_app/feature/auth/splash/view/splash_view.dart';
-import 'package:tasky_app/feature/home/view/home.dart';
+import 'package:tasky_app/feature/home/view/home_view.dart';
 import 'package:tasky_app/feature/auth/onborading/view/onboarding_view.dart';
 
 class AppRoutes {
@@ -26,7 +27,13 @@ class AppRoutes {
       GetPage(name: configRoute, page: () => const ConfigRouting()),
       GetPage(name: splash, page: () => const SplashView()),
       GetPage(name: onborading, page: () => const OnboardingView()),
-      GetPage(name: login, page: () => const LoginView()),
+      GetPage(
+        name: '/login',
+        page: () => const LoginView(),
+        binding: BindingsBuilder(() {
+          Get.lazyPut(() => LoginController());
+        }),
+      ),
       GetPage(name: register, page: () => const RegisterView()),
       GetPage(name: home, page: () => const HomeView()),
       GetPage(

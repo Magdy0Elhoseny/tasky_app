@@ -18,8 +18,8 @@ class PriorityaddtaskDropdownWidget extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
           decoration: BoxDecoration(
-            color: AppStyels.secondaryColor.withOpacity(0.2),
-            borderRadius: BorderRadius.circular(12),
+            color: AppStyels.secondaryColor,
+            borderRadius: BorderRadius.circular(10),
           ),
           child: DropdownButtonHideUnderline(
             child: Obx(() => DropdownButton<String>(
@@ -33,9 +33,11 @@ class PriorityaddtaskDropdownWidget extends StatelessWidget {
                       child: Row(
                         children: [
                           SvgPicture.asset(AssetManager.flagIcon,
-                              color: AppStyels.primaryColor),
+                              color: _getPriorityTextColor(value)),
                           const SizedBox(width: 8),
-                          Text(value),
+                          Text(value,
+                              style: AppStyels.textStyle16W700.copyWith(
+                                  color: _getPriorityTextColor(value))),
                         ],
                       ),
                     );
@@ -50,5 +52,18 @@ class PriorityaddtaskDropdownWidget extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Color _getPriorityTextColor(String priority) {
+    switch (priority) {
+      case 'Low Priority':
+        return Color.fromRGBO(0, 135, 255, 1);
+      case 'Medium Priority':
+        return Color.fromRGBO(95, 51, 225, 1);
+      case 'High Priority':
+        return Color.fromRGBO(255, 125, 83, 1);
+      default:
+        return Colors.grey;
+    }
   }
 }

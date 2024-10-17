@@ -18,29 +18,25 @@ class DueDateField extends StatelessWidget {
       children: [
         const Text('Due date', style: AppStyels.textStyleHint14W500),
         const SizedBox(height: 8),
-        Container(
-          color: AppStyels.secondaryColor.withOpacity(0.2),
-          child: Obx(() => TextField(
-                controller:
-                    TextEditingController(text: controller.dueDate.value),
-                readOnly: true,
-                decoration: InputDecoration(
-                  hintText: controller.getDueDate() == null
-                      ? controller.getDueDate()
-                      : 'Select date',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(
-                        color: AppStyels.secondaryColor.withOpacity(0.2)),
-                  ),
-                  suffixIcon: IconButton(
-                    icon: SvgPicture.asset(AssetManager.calendarIcon,
-                        color: AppStyels.primaryColor),
-                    onPressed: () => _selectDate(context),
-                  ),
+        Obx(() => TextField(
+              controller: TextEditingController(text: controller.dueDate.value),
+              readOnly: true,
+              decoration: InputDecoration(
+                hintText: controller.getDueDate() == null
+                    ? controller.getDueDate()
+                    : 'Select date',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(
+                      color: AppStyels.secondaryColor.withOpacity(0.2)),
                 ),
-              )),
-        ),
+                suffixIcon: IconButton(
+                  icon: SvgPicture.asset(AssetManager.calendarIcon,
+                      color: AppStyels.primaryColor),
+                  onPressed: () => _selectDate(context),
+                ),
+              ),
+            )),
       ],
     );
   }

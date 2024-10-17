@@ -10,7 +10,7 @@ Widget buildTaskList(HomeController controller) {
         itemBuilder: (context, index) {
           final task = controller.filteredTasks[index];
           return Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
+            padding: const EdgeInsets.only(bottom: 12.0),
             child: TaskItem(task: task, controller: controller),
           );
         },

@@ -20,6 +20,10 @@ class _ProfileViewState extends State<ProfileView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
+        titleTextStyle: AppStyels.textStyle16W700.copyWith(color: Colors.black),
+        centerTitle: false,
+        titleSpacing: 0,
+        backgroundColor: AppStyels.backgroundColor,
         leading: IconButton(
           icon: SvgPicture.asset(AssetManager.arrowBackIcon),
           onPressed: () => Get.back(),
@@ -36,7 +40,7 @@ class _ProfileViewState extends State<ProfileView> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 _buildInfoItem('NAME', profile.displayName),
-                _infoItem('PHONE', profile.username),
+                _phoneInfoItem('PHONE', profile.username),
                 _buildInfoItem('LEVEL', profile.level),
                 _buildInfoItem(
                     'YEARS OF EXPERIENCE', '${profile.experienceYears} years'),
@@ -56,7 +60,7 @@ class _ProfileViewState extends State<ProfileView> {
       padding: const EdgeInsets.only(top: 8.0),
       child: Container(
         decoration: BoxDecoration(
-          color: AppStyels.textfeildColor.withOpacity(0.25),
+          color: Color.fromRGBO(245, 245, 245, 1),
           borderRadius: BorderRadius.circular(10),
         ),
         child: ListTile(
@@ -71,12 +75,12 @@ class _ProfileViewState extends State<ProfileView> {
     );
   }
 
-  Widget _infoItem(String label, String value) {
+  Widget _phoneInfoItem(String label, String value) {
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
       child: Container(
         decoration: BoxDecoration(
-          color: AppStyels.textfeildColor.withOpacity(0.25),
+          color: Color.fromRGBO(245, 245, 245, 1),
           borderRadius: BorderRadius.circular(10),
         ),
         child: ListTile(
@@ -98,12 +102,3 @@ class _ProfileViewState extends State<ProfileView> {
     );
   }
 }
-
-// Column(
-//         crossAxisAlignment: CrossAxisAlignment.center,
-//         children: [
-//           Text(label, style: TextStyle(color: Colors.grey[600], fontSize: 12)),
-//           const SizedBox(height: 4),
-//           Text(value, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-//         ],
-//       ),

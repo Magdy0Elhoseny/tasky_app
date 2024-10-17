@@ -11,6 +11,7 @@ class HomeScreenFilter extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
+      physics: const BouncingScrollPhysics(),
       child: Obx(() => Row(
             children: List.generate(
               controller.filterTypes.length,
@@ -26,7 +27,7 @@ class HomeScreenFilter extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: isSelected
                             ? AppStyels.primaryColor
-                            : Colors.grey[200],
+                            : AppStyels.secondaryColor,
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Padding(
@@ -34,10 +35,11 @@ class HomeScreenFilter extends StatelessWidget {
                             horizontal: 16, vertical: 8),
                         child: Text(
                           controller.filterTypes[index],
-                          style: TextStyle(
-                            color: isSelected ? Colors.white : Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          style: isSelected
+                              ? AppStyels.textStyle16W700
+                                  .copyWith(color: Colors.white)
+                              : AppStyels.textStyle16W400
+                                  .copyWith(color: AppStyels.textColor),
                         ),
                       ),
                     ),

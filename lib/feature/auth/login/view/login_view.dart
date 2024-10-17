@@ -32,7 +32,7 @@ class LoginView extends StatelessWidget {
                     flex: 2,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                      child: loginForm(controller),
+                      child: LoginFormWidget(controller: controller),
                     )),
               ],
             ),

@@ -51,7 +51,7 @@ class LoginController extends GetxController {
       if (authResponse != null && authResponse.id.isNotEmpty) {
         routeController.goToHome();
       } else {
-        errorMessage.value = 'wrong phone or password';
+        errorMessage.value = 'Incorrect phone number or password';
       }
     } catch (e) {
       log('Login error: $e');

@@ -14,9 +14,15 @@ class StatusDetailsDropdown extends GetView<DetailsController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          height: 50,
+          padding: const EdgeInsets.only(
+            left: 24,
+            right: 10,
+            top: 4,
+            bottom: 4,
+          ),
           decoration: BoxDecoration(
-            color: AppStyels.secondaryColor.withOpacity(0.2),
+            color: AppStyels.secondaryColor,
             borderRadius: BorderRadius.circular(12),
           ),
           child: DropdownButtonHideUnderline(
@@ -32,10 +38,11 @@ class StatusDetailsDropdown extends GetView<DetailsController> {
                       value: value,
                       child: Row(
                         children: [
-                          const Icon(Icons.info_outline,
-                              color: AppStyels.primaryColor),
-                          const SizedBox(width: 8),
-                          Text(value),
+                          Text(
+                              value.replaceFirst(
+                                  value[0], value[0].toUpperCase()),
+                              style: AppStyels.textStyle16W700
+                                  .copyWith(color: _getStatusTextColor(value))),
                         ],
                       ),
                     );
@@ -51,5 +58,18 @@ class StatusDetailsDropdown extends GetView<DetailsController> {
         ),
       ],
     );
+  }
+
+  Color _getStatusTextColor(String status) {
+    switch (status.toLowerCase()) {
+      case 'waiting':
+        return Color.fromRGBO(255, 125, 83, 1);
+      case 'in progress':
+        return AppStyels.primaryColor;
+      case 'finished':
+        return Color.fromRGBO(0, 135, 255, 1);
+      default:
+        return Colors.grey;
+    }
   }
 }

@@ -32,7 +32,9 @@ class DetailsController extends GetxController {
       selectedPriority.value = detailsTask.priority;
       selectedStatus.value = detailsTask.status;
     } catch (e) {
-      Get.snackbar('Error', 'Failed to fetch task details: $e');
+      Get.snackbar(
+          'Error', 'please check the QR if it contain the TaskId try again');
+      Get.back();
     } finally {
       isLoading.value = false;
     }
@@ -99,28 +101,28 @@ class DetailsController extends GetxController {
         : 'Mark as Finished';
   }
 
-  void updatePriority(String newPriority) async {
-    try {
-      isLoading.value = true;
-      selectedPriority.value = newPriority;
-      Get.snackbar('Success', 'Task priority updated successfully');
-    } catch (e) {
-      Get.snackbar('Error', 'Failed to update task priority: $e');
-    } finally {
-      isLoading.value = false;
-    }
-  }
+  // void updatePriority(String newPriority) async {
+  //   try {
+  //     isLoading.value = true;
+  //     selectedPriority.value = newPriority;
+  //     Get.snackbar('Success', 'Task priority updated successfully');
+  //   } catch (e) {
+  //     Get.snackbar('Error', 'Failed to update task priority: $e');
+  //   } finally {
+  //     isLoading.value = false;
+  //   }
+  // }
 
-  void updateStatus(String newStatus) async {
-    try {
-      isLoading.value = true;
+  // void updateStatus(String newStatus) async {
+  //   try {
+  //     isLoading.value = true;
 
-      selectedStatus.value = newStatus;
-      Get.snackbar('Success', 'Task status updated successfully');
-    } catch (e) {
-      Get.snackbar('Error', 'Failed to update task status: $e');
-    } finally {
-      isLoading.value = false;
-    }
-  }
+  //     selectedStatus.value = newStatus;
+  //     Get.snackbar('Success', 'Task status updated successfully');
+  //   } catch (e) {
+  //     Get.snackbar('Error', 'Failed to update task status: $e');
+  //   } finally {
+  //     isLoading.value = false;
+  //   }
+  // }
 }

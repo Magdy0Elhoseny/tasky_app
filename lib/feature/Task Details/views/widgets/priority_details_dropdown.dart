@@ -14,9 +14,15 @@ class PriorityDetailsDropdown extends GetView<DetailsController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          height: 50,
+          padding: const EdgeInsets.only(
+            left: 24,
+            right: 10,
+            top: 4,
+            bottom: 4,
+          ),
           decoration: BoxDecoration(
-            color: AppStyels.secondaryColor.withOpacity(0.2),
+            color: AppStyels.secondaryColor,
             borderRadius: BorderRadius.circular(12),
           ),
           child: DropdownButtonHideUnderline(
@@ -32,9 +38,12 @@ class PriorityDetailsDropdown extends GetView<DetailsController> {
                       child: Row(
                         children: [
                           SvgPicture.asset(AssetManager.flagIcon,
-                              color: AppStyels.primaryColor),
+                              color: _getPriorityTextColor(value)),
                           const SizedBox(width: 8),
-                          Text(value),
+                          Text(
+                              "${value.replaceFirst(value[0], value[0].toUpperCase())} Priority",
+                              style: AppStyels.textStyle16W700.copyWith(
+                                  color: _getPriorityTextColor(value))),
                         ],
                       ),
                     );
@@ -49,5 +58,18 @@ class PriorityDetailsDropdown extends GetView<DetailsController> {
         ),
       ],
     );
+  }
+
+  Color _getPriorityTextColor(String priority) {
+    switch (priority.toLowerCase()) {
+      case 'low':
+        return Color.fromRGBO(0, 135, 255, 1);
+      case 'medium':
+        return Color.fromRGBO(95, 51, 225, 1);
+      case 'high':
+        return Color.fromRGBO(255, 125, 83, 1);
+      default:
+        return Colors.grey;
+    }
   }
 }

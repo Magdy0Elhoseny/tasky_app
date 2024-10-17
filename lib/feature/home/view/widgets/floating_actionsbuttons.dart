@@ -6,59 +6,25 @@ import 'package:tasky_app/core/asset%20manager/asset_manager.dart';
 import 'package:tasky_app/core/helper/theme/app_theme.dart';
 import 'package:tasky_app/core/route/app_route.dart';
 import 'package:tasky_app/feature/home/Controller/home_controller.dart';
-import 'package:tasky_app/feature/home/view/widgets/custom_appbar.dart';
-import 'package:tasky_app/feature/home/view/widgets/task_filter.dart';
-import 'package:tasky_app/feature/home/view/widgets/task_list.dart';
 
-class HomeView extends StatelessWidget {
-  const HomeView({super.key});
-
+class FloatingActionsButtons extends StatelessWidget {
+  const FloatingActionsButtons({super.key, required this.controller});
+  final HomeController controller;
   @override
   Widget build(BuildContext context) {
-    final HomeController controller = Get.put(HomeController());
-    return Scaffold(
-      body: SafeArea(
-        child: RefreshIndicator(
-          onRefresh: () => controller.fetchTasks(),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomAppbar(controller: controller),
-                const Text(
-                  "My Tasks",
-                  style: AppStyels.textStyle16W700,
-                ),
-                const SizedBox(height: 12),
-                HomeScreenFilter(),
-                const SizedBox(height: 20),
-                Expanded(
-                  child: Obx(() {
-                    if (controller.isLoading.value) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else {
-                      return buildTaskList(controller);
-                    }
-                  }),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FloatingActionButton(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        SizedBox(
+          height: 50,
+          width: 50,
+          child: FloatingActionButton(
             heroTag: 'qr',
             onPressed: () async {
               await Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => AiBarcodeScanner(
                     onDispose: () {
-                      /// This is called when the barcode scanner is disposed.
-                      /// You can write your own logic here.
                       debugPrint("Barcode scanner disposed!");
                     },
                     hideGalleryButton: false,
@@ -69,7 +35,6 @@ class HomeView extends StatelessWidget {
                       final String? scannedValue =
                           capture.barcodes.first.rawValue;
                       if (scannedValue != null) {
-                        // Assuming the scanned value is the task ID
                         Get.toNamed(AppRoutes.details, arguments: scannedValue);
                       }
                     },
@@ -88,14 +53,24 @@ class HomeView extends StatelessWidget {
                 ),
               );
             },
+            elevation: 0,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(32),
             ),
-            child: SvgPicture.asset(AssetManager.qrIcon),
+            child: SvgPicture.asset(
+              AssetManager.qrIcon,
+              width: 24,
+              height: 24,
+            ),
           ),
-          const SizedBox(height: 20),
-          FloatingActionButton(
+        ),
+        const SizedBox(height: 20),
+        SizedBox(
+          height: 64,
+          width: 64,
+          child: FloatingActionButton(
             heroTag: 'addTask',
+            elevation: 0,
             onPressed: () {
               controller.goToAddTask();
             },
@@ -109,8 +84,8 @@ class HomeView extends StatelessWidget {
               size: 32,
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

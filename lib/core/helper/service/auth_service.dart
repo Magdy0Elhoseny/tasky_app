@@ -77,7 +77,6 @@ class AuthService {
     final String? refreshToken = await TokenManager.getRefreshToken();
     if (refreshToken == null) {
       log('refreshToken not found');
-      Get.find<RouteController>().logout();
       return false;
     }
     try {
