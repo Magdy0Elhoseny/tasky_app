@@ -46,7 +46,7 @@ class HomeView extends StatelessWidget {
                   if (controller.isLoading.value) {
                     return const Center(child: CircularProgressIndicator());
                   } else {
-                    return buildTaskList(controller);
+                    return TaskList(controller: controller);
                   }
                 }),
               ),

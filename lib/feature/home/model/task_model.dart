@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 class Task {
   final String id;
   final String image;
@@ -20,15 +22,21 @@ class Task {
   });
 
   factory Task.fromJson(Map<String, dynamic> json) {
-    return Task(
-      id: json['_id']?.toString() ?? '',
-      image: json['image']?.toString() ?? '',
-      title: json['title']?.toString() ?? '',
-      desc: json['desc']?.toString() ?? '',
-      priority: json['priority']?.toString() ?? '',
-      status: json['status']?.toString() ?? '',
-      createdAt: json['createdAt']?.toString() ?? '',
-      updatedAt: json['updatedAt']?.toString() ?? '',
-    );
+    try {
+      return Task(
+        id: json['_id']?.toString() ?? '',
+        image: json['image']?.toString() ?? '',
+        title: json['title']?.toString() ?? '',
+        desc: json['desc']?.toString() ?? '',
+        priority: json['priority']?.toString() ?? '',
+        status: json['status']?.toString() ?? '',
+        createdAt: json['createdAt']?.toString() ?? '',
+        updatedAt: json['updatedAt']?.toString() ?? '',
+      );
+    } catch (e) {
+      log('Failed to parse Task from JSON: $e');
+      log('JSON: $json');
+      rethrow;
+    }
   }
 }

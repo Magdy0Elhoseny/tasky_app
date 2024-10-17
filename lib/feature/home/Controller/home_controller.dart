@@ -1,6 +1,4 @@
 import 'dart:developer';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasky_app/core/helper/service/home_service.dart';
@@ -21,6 +19,8 @@ class HomeController extends GetxController {
     'Finished',
   ];
   RxList<Task> filteredTasks = <Task>[].obs;
+  int currentPage = 1;
+  bool hasMore = true;
 
   @override
   void onInit() {
@@ -30,18 +30,20 @@ class HomeController extends GetxController {
   }
 
   Future<void> fetchTasks() async {
+    if (!hasMore) return;
     isLoading.value = true;
     try {
-      final List<Task> fetchedTasks = await _homeService.getTasks();
-      tasks.assignAll(fetchedTasks);
+      final List<Task> fetchedTasks =
+          await _homeService.getTasks(page: currentPage);
+      if (fetchedTasks.isEmpty) {
+        hasMore = false;
+      } else {
+        tasks.addAll(fetchedTasks);
+        currentPage++;
+      }
       _applyFilter();
     } catch (e) {
-      if (e is DioException && e.response?.statusCode == 401) {
-        Get.snackbar('Session Expired', 'Please log in again.');
-        Get.find<RouteController>().logout();
-      } else {
-        Get.snackbar('Error', 'Failed to fetch tasks. Please try again.');
-      }
+      Get.snackbar('Error', 'Failed to fetch tasks. Please try again.');
       log('Error fetching tasks: $e');
     } finally {
       isLoading.value = false;
