@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'package:get/get.dart';
 
 class Task {
   final String id;
@@ -34,8 +34,7 @@ class Task {
         updatedAt: json['updatedAt']?.toString() ?? '',
       );
     } catch (e) {
-      log('Failed to parse Task from JSON: $e');
-      log('JSON: $json');
+      Get.snackbar('Error', 'Failed to load tasks data');
       rethrow;
     }
   }

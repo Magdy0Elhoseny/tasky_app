@@ -34,11 +34,10 @@ class AddTaskController extends GetxController {
 
   Future<void> addTask() async {
     if (!_validateInputs()) return;
-    // start loader
     String? uploadedImageUrl =
         await _addTaskService.uploadImage(_pickedImage.value!);
     if (uploadedImageUrl == null) {
-      // stop loader
+      Get.snackbar('Error', 'Failed to upload image');
       return;
     }
     final task = AddTaskModel(
@@ -73,26 +72,6 @@ class AddTaskController extends GetxController {
     selectedPriority.value = priority;
   }
 
-  // Future<void> uploadImage(File image) async {
-  //   _isUploading.value = true;
-  //   try {
-  //     final result = await _addTaskService.uploadImage(image, token);
-  //     if (result != null) {
-  //       _imageUrl.value = result;
-  //       log('Image uploaded successfully. URL: $result');
-  //     } else {
-  //       log('Image upload failed');
-  //       Get.snackbar('Warning',
-  //           'Failed to upload image. You can still create the task without an image.');
-  //     }
-  //   } catch (e) {
-  //     log('Error uploading image: $e');
-  //     Get.snackbar('Error', 'Failed to upload image: ${e.toString()}');
-  //   } finally {
-  //     _isUploading.value = false;
-  //   }
-  // }
-
   void updateDueDate(String date) {
     dueDate.value = date;
   }
@@ -104,10 +83,4 @@ class AddTaskController extends GetxController {
   void setPickedImage(File image) {
     _pickedImage.value = image;
   }
-
-  // Future<void> uploadPickedImage() async {
-  //   if (_pickedImage.value != null) {
-  //     await uploadImage(_pickedImage.value!);
-  //   }
-  // }
 }

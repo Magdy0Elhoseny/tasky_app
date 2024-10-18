@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -69,7 +67,6 @@ class RegisterController extends GetxController {
         address: addressController.text,
         level: selectedExperienceLevel.value,
       );
-      log('Sending registration data: ${userData.toJson()}');
       RegisterResponse? response =
           await _authService.register(userData.toJson());
       if (response != null && response.id.isNotEmpty) {
@@ -78,9 +75,8 @@ class RegisterController extends GetxController {
         errorMessage.value = 'Registration failed. Please try again.';
       }
     } on DioException catch (e) {
-      log('DioError: ${e.toString()}');
+      Get.snackbar('Error', e.response!.data['message'] ?? 'Unexpected error');
       if (e.response != null) {
-        log('Response data: ${e.response!.data}');
         if (e.response!.statusCode == 422) {
           errorMessage.value =
               e.response!.data['message'] ?? 'Phone number is already in use';
@@ -92,7 +88,6 @@ class RegisterController extends GetxController {
         errorMessage.value = 'Network error: ${e.message}';
       }
     } catch (e) {
-      log('Unexpected error: ${e.toString()}');
       errorMessage.value = 'An unexpected error occurred. Please try again.';
     } finally {
       isLoading.value = false;

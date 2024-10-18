@@ -108,29 +108,42 @@ class TaskItem extends StatelessWidget {
           Expanded(
             flex: 1,
             child: PopupMenuButton(
-                onSelected: (value) {
-                  if (value == 'edit') {
-                    Get.offAllNamed(AppRoutes.details, arguments: task);
-                  } else if (value == 'delete') {
-                    controller.deleteTask(task.id);
-                  }
-                },
-                icon: const Icon(Icons.more_vert, size: 24),
-                itemBuilder: (context) => [
-                      const PopupMenuItem(
-                        value: 'edit',
-                        child: Text('Edit', style: AppStyels.textStyle16W500),
-                      ),
-                      PopupMenuItem(
-                        value: 'delete',
-                        child: Text(
-                          'Delete',
-                          style: AppStyels.textStyle16W500.copyWith(
-                            color: const Color.fromRGBO(255, 125, 83, 1),
-                          ),
-                        ),
-                      ),
-                    ]),
+              icon: Icon(Icons.more_vert, color: Colors.black),
+              onSelected: (value) {
+                if (value == 'edit') {
+                  Get.offAllNamed(AppRoutes.details, arguments: task);
+                } else if (value == 'delete') {
+                  controller.deleteTask(task.id);
+                }
+              },
+              itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                PopupMenuItem(
+                  value: 'edit',
+                  child: Row(
+                    children: [
+                      Icon(Icons.edit, color: Colors.black),
+                      const SizedBox(width: 8),
+                      Text('Edit', style: TextStyle(color: Colors.black)),
+                    ],
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 'delete',
+                  child: Row(
+                    children: [
+                      Icon(Icons.delete, color: Colors.red),
+                      const SizedBox(width: 8),
+                      Text('Delete', style: TextStyle(color: Colors.red)),
+                    ],
+                  ),
+                ),
+              ],
+              offset: Offset(0, 40),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              color: Colors.white,
+            ),
           ),
         ],
       ),
@@ -176,3 +189,7 @@ class TaskItem extends StatelessWidget {
     }
   }
 }
+/*
+
+
+ */

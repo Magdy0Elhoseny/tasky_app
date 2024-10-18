@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasky_app/core/helper/service/home_service.dart';
@@ -44,7 +43,6 @@ class HomeController extends GetxController {
       _applyFilter();
     } catch (e) {
       Get.snackbar('Error', 'Failed to fetch tasks. Please try again.');
-      log('Error fetching tasks: $e');
     } finally {
       isLoading.value = false;
     }

@@ -39,8 +39,7 @@ class DioConfig {
           if (error.response?.statusCode == 401) {
             bool isSuccess = await AuthService().refreshTokenFromApi();
             if (!isSuccess) {
-              // Only log out if the refresh token is actually null, not on failed login attempts
-              if (TokenManager.getRefreshToken() == null) {
+              if (TokenManager().getAccessToken() == null) {
                 Get.find<RouteController>().logout();
               }
               return handler.next(error);

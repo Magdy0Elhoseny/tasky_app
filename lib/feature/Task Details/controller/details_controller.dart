@@ -100,29 +100,4 @@ class DetailsController extends GetxController {
         ? 'Mark as In Progress'
         : 'Mark as Finished';
   }
-
-  // void updatePriority(String newPriority) async {
-  //   try {
-  //     isLoading.value = true;
-  //     selectedPriority.value = newPriority;
-  //     Get.snackbar('Success', 'Task priority updated successfully');
-  //   } catch (e) {
-  //     Get.snackbar('Error', 'Failed to update task priority: $e');
-  //   } finally {
-  //     isLoading.value = false;
-  //   }
-  // }
-
-  // void updateStatus(String newStatus) async {
-  //   try {
-  //     isLoading.value = true;
-
-  //     selectedStatus.value = newStatus;
-  //     Get.snackbar('Success', 'Task status updated successfully');
-  //   } catch (e) {
-  //     Get.snackbar('Error', 'Failed to update task status: $e');
-  //   } finally {
-  //     isLoading.value = false;
-  //   }
-  // }
 }

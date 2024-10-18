@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasky_app/core/helper/service/auth_service.dart';
@@ -14,7 +12,7 @@ class LoginController extends GetxController {
   final RxBool isPasswordHidden = true.obs;
   final RxBool isLoading = false.obs;
   final RxString errorMessage = ''.obs;
-  final RxString selectedCountryCode = '+20'.obs; // Default to Egypt
+  final RxString selectedCountryCode = '+20'.obs;
 
   void updateCountryCode(String code) {
     selectedCountryCode.value = code;
@@ -54,7 +52,6 @@ class LoginController extends GetxController {
         errorMessage.value = 'Incorrect phone number or password';
       }
     } catch (e) {
-      log('Login error: $e');
       errorMessage.value = 'An error occurred. Please try again.';
     } finally {
       isLoading.value = false;

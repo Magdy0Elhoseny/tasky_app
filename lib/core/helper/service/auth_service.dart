@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:tasky_app/core/constants/end_points.dart';
@@ -30,7 +29,6 @@ class AuthService {
       return null;
     } on DioException catch (e) {
       if (e.response != null) {
-        log('Register error: ${e.response!.statusCode} - ${e.response!.data}');
         if (e.response!.statusCode == 500) {
           throw Exception(
               'Server error: Please try again later or contact support.');
@@ -39,12 +37,11 @@ class AuthService {
               'Server error: ${e.response!.statusMessage ?? 'Unknown error'}');
         }
       } else {
-        log('Register error: ${e.message}');
         throw Exception(
             'Network error: Please check your internet connection.');
       }
     } catch (e) {
-      log('Register error: $e');
+      Get.snackbar('Error', "Unexpected error: Please try again.");
       throw Exception('Unexpected error: Please try again.');
     }
   }
@@ -68,7 +65,6 @@ class AuthService {
       }
       return null;
     } catch (e) {
-      log('Login error: $e');
       return null;
     }
   }
@@ -76,7 +72,6 @@ class AuthService {
   Future<bool> refreshTokenFromApi() async {
     final String? refreshToken = await TokenManager.getRefreshToken();
     if (refreshToken == null) {
-      log('refreshToken not found');
       return false;
     }
     try {
@@ -89,9 +84,7 @@ class AuthService {
       await LocalStorage.saveToken(newAccessToken);
       return true;
     } catch (e) {
-      log('refreshToken not found');
       Get.find<RouteController>().logout();
-      log('=======auth service=======Error refreshing token: $e');
       return false;
     }
   }

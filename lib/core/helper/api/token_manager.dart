@@ -1,5 +1,4 @@
-import 'dart:developer';
-
+import 'package:get/get.dart';
 import 'package:tasky_app/core/utils/local_database.dart';
 
 class TokenManager {
@@ -31,7 +30,7 @@ class TokenManager {
       await saveTokens(newAccessToken, newRefreshToken);
       return true;
     } catch (e) {
-      log('Error refreshing tokens: $e');
+      Get.snackbar('Error', "Unexpected error: Please try again.");
       return false;
     }
   }

@@ -38,17 +38,3 @@ class ProfileModel {
     );
   }
 }
-
-    // "_id": "6649fb2eef0bf93dd00711ba",
-    // "displayName": "Morad Abdelgaber",
-    // "username": "+201010558269",
-    // "roles": [
-    //     "user"
-    // ],
-    // "active": true,
-    // "experienceYears": 10,
-    // "address": "Mit ghamr , Dakahlia , Egypt",
-    // "level": "senior",
-    // "createdAt": "2024-05-19T13:14:22.412Z",
-    // "updatedAt": "2024-05-19T13:14:22.412Z",
-    // "__v": 0

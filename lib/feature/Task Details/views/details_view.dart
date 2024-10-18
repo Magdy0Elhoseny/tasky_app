@@ -42,7 +42,7 @@ class DetailsView extends GetView<DetailsController> {
                   children: [
                     Icon(Icons.edit, color: Colors.black),
                     const SizedBox(width: 8),
-                    Text('Edit', style: TextStyle(color: Colors.black)),
+                    Text('Save Edit', style: TextStyle(color: Colors.black)),
                   ],
                 ),
               ),

@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:get/get_navigation/get_navigation.dart';
+import 'package:get/utils.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:tasky_app/core/constants/end_points.dart';
 import 'package:tasky_app/core/constants/urls.dart';
@@ -20,7 +22,7 @@ class AddTaskService {
 
       return response.statusCode == 200 || response.statusCode == 201;
     } catch (e) {
-      // show dialog
+      Get.snackbar('Error', "Failed to add task, please try again");
       return false;
     }
   }
@@ -45,7 +47,7 @@ class AddTaskService {
 
       return response.data['image'];
     } catch (e) {
-      // show snackBar
+      Get.snackbar('Error', "Failed to upload image, please try again");
       return null;
     }
   }
@@ -58,7 +60,7 @@ class AddTaskService {
     } else if (fileName.endsWith('.gif')) {
       return 'image/gif';
     } else {
-      return 'application/octet-stream'; // Default to binary data if type is unknown
+      return 'application/octet-stream';
     }
   }
 }

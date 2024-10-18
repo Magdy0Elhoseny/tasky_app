@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -28,7 +27,6 @@ class AddImageButton extends StatelessWidget {
         controller.setPickedImage(image);
       }
     } catch (e) {
-      log('Error picking image: $e');
       Get.snackbar('Error', 'Failed to pick image. Please try again.');
     }
   }
