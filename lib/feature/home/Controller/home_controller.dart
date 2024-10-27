@@ -25,11 +25,27 @@ class HomeController extends GetxController {
   void onInit() {
     super.onInit();
     selectedFilter = 'All'.obs;
-    fetchTasks();
+    initialFetch();
+  }
+
+  Future<void> initialFetch() async {
+    await fetchTasks();
+    isLoading.value = false;
+  }
+
+  void resetPagination() {
+    currentPage = 1;
+    hasMore = true;
+    tasks.clear();
+    filteredTasks.clear();
   }
 
   Future<void> fetchTasks() async {
-    if (!hasMore) return;
+    if (!hasMore ||
+        (isLoading.value && tasks.isNotEmpty) ||
+        selectedFilter.value != 'All') {
+      return;
+    }
     isLoading.value = true;
     try {
       final List<Task> fetchedTasks =
@@ -55,7 +71,7 @@ class HomeController extends GetxController {
 
   void _applyFilter() {
     if (selectedFilter.value == 'All') {
-      return filteredTasks.assignAll(tasks);
+      filteredTasks.assignAll(tasks);
     } else {
       filteredTasks.assignAll(tasks.where((task) =>
           task.status.toLowerCase() == selectedFilter.value.toLowerCase()));

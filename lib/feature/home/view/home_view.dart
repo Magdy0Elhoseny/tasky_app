@@ -19,7 +19,10 @@ class HomeView extends StatelessWidget {
       ),
       body: SafeArea(
         child: RefreshIndicator(
-          onRefresh: () => controller.fetchTasks(),
+          onRefresh: () async {
+            controller.resetPagination();
+            await controller.fetchTasks();
+          },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -43,7 +46,8 @@ class HomeView extends StatelessWidget {
               const SizedBox(height: 20),
               Expanded(
                 child: Obx(() {
-                  if (controller.isLoading.value) {
+                  if (controller.isLoading.value &&
+                      controller.filteredTasks.isEmpty) {
                     return const Center(child: CircularProgressIndicator());
                   } else {
                     return TaskList(controller: controller);
