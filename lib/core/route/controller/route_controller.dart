@@ -50,7 +50,7 @@ class RouteController extends GetxController {
   }
 
   void goToRegister() {
-    Get.toNamed(AppRoutes.register);
+    Get.offAllNamed(AppRoutes.register);
   }
 
   void goToHome() {

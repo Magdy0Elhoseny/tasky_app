@@ -1,10 +1,9 @@
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:tasky_app/core/helper/theme/app_theme.dart';
-import 'package:tasky_app/core/asset manager/asset_manager.dart';
 import 'package:tasky_app/feature/add task/controller/add_task_controller.dart';
 
 class AddImageButton extends StatelessWidget {
@@ -35,31 +34,41 @@ class AddImageButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() => GestureDetector(
           onTap: () => _showImageSourceDialog(context),
-          child: Container(
-            height: 100,
-            decoration: BoxDecoration(
-              border: Border.all(color: AppStyels.primaryColor),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: controller.pickedImage == null
-                ? _buildAddImagePlaceholder()
-                : Center(child: _buildPickedImage()),
-          ),
+          child: controller.pickedImage == null
+              ? _buildAddImagePlaceholder()
+              : Center(child: _buildPickedImage()),
         ));
   }
 
   Widget _buildAddImagePlaceholder() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SvgPicture.asset(AssetManager.addImageIcon,
-              color: AppStyels.primaryColor),
-          const SizedBox(height: 8),
-          const Text('Add Image',
-              style: TextStyle(color: AppStyels.primaryColor)),
-        ],
-      ),
+    return SizedBox(
+      height: 60,
+      width: double.infinity,
+      child: DottedBorder(
+          borderType: BorderType.RRect,
+          strokeCap: StrokeCap.round,
+          color: AppStyels.primaryColor,
+          dashPattern: const [1.6, 4],
+          radius: const Radius.circular(12),
+          strokeWidth: 1.2,
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.add_photo_alternate_outlined,
+                  color: AppStyels.primaryColor,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  'Add Image',
+                  style: AppStyels.textStyle16W700
+                      .copyWith(color: AppStyels.primaryColor),
+                )
+              ],
+            ),
+          )),
     );
   }
 

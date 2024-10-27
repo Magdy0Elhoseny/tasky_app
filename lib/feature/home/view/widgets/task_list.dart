@@ -34,7 +34,7 @@ class _TaskListState extends State<TaskList> {
           itemBuilder: (context, index) {
             final task = widget.controller.filteredTasks[index];
             return Padding(
-              padding: const EdgeInsets.only(bottom: 12.0),
+              padding: const EdgeInsets.only(left: 22, right: 22, bottom: 12.0),
               child: TaskItem(task: task, controller: widget.controller),
             );
           },
